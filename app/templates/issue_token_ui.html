@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if message %} {# Display messages passed from the POST handler #}
+        <div class="alert alert-{{ message_type or 'info' }}">
+             <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                {% if message_type == 'success' %}
+                    <polyline points="20,6 9,17 4,12"></polyline>
+                {% elif message_type == 'error' %}
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
+                {% else %}
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                {% endif %}
+            </svg>
+            {{ message }}
+        </div>
+    {% endif %}
+
+    {% if issued_atk %}
+        <div class="token-result-card card">
+            <h3>Generated ATK</h3>
+            <div class="token-container">
+                <pre class="token-display" id="issuedAtkPre">{{ issued_atk }}</pre>
+                <button onclick="copyToken('issuedAtkPre', this)" class="copy-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy Token
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="form-card card">
+        <form method="post" class="token-form">
+            <h2>Issue New Agent Token (ATK)</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="user_id">User ID</label>
+                    <input type="text" 
+                           id="user_id" 
+                           name="user_id" 
+                           value="{{ form_data.user_id if form_data else 'test-user-001' }}" 
+                           placeholder="Enter user identifier"
+                           required>
+                    <p class="field-description">Identifier for the user delegating the agent.</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="audience_sp_id">Audience (Service Provider ID)</label>
+                    <input type="text" 
+                           id="audience_sp_id" 
+                           name="audience_sp_id" 
+                           value="{{ form_data.audience_sp_id if form_data else 'https://api.example-sp.com/v1' }}" 
+                           placeholder="e.g., https://api.sp.com or sp_identifier"
+                           required>
+                    <p class="field-description">The service provider that will validate this token.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="permissions">Permissions</label> {# Changed alias from permissions_str to permissions #}
+                <textarea id="permissions" 
+                          name="permissions" {# This name 'permissions' now directly matches input_permissions_str alias #}
+                          rows="3" 
+                          placeholder="e.g., read:articles_all,summarize:text_content_short" 
+                          required>{{ form_data.permissions_str if form_data else 'read:articles_all,summarize:text_content_short' }}</textarea>
+                <p class="field-description">Comma-separated list of permissions (e.g., action:resource). <br>
+                    Available standard examples: {{ standard_permissions | join(', ') }}. Custom allowed for PoC.
+                </p>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="purpose">Purpose</label>
+                    <input type="text" 
+                           id="purpose" 
+                           name="purpose" 
+                           value="{{ form_data.purpose if form_data else 'PoC News Summary Task' }}" 
+                           placeholder="Describe the intended use of this token"
+                           required>
+                </div>
+
+                <div class="form-group">
+                    <label for="model_id">AI Model ID</label>
+                    <select id="model_id" name="model_id" required>
+                        {% for model in supported_models %}
+                            <option value="{{ model }}" 
+                                    {% if form_data and form_data.model_id == model %}selected{% endif %}>
+                                {{ model }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <p class="field-description">Select the AI model associated with the agent.</p>
+                </div>
+            </div>
+
+            {# --- SIMPLIFIED Trust Tags Section --- #}
+            <div class="trust-tags-section">
+                <h3>Metadata: Trust Tags</h3>
+                {% if default_trust_tags_info and default_trust_tags_info | length > 0 %}
+                    <p class="text-subtle">All ATKs generated via this UI will currently include the following default trust tags from settings:
+                        <pre style="font-size: 0.9em; margin-top: 5px;">{{ default_trust_tags_info | tojson(indent=2) }}</pre>
+                    </p>
+                {% else %}
+                    <p class="text-subtle">No default trust tags are currently configured to be added to the ATK.</p>
+                {% endif %}
+                <p class="text-subtle"><em>Trust tags coming soon in a future update.</em></p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"></path>
+                    </svg>
+                    Issue ATK
+                </button>
+                <button type="reset" class="btn-secondary">Clear Form</button>
+            </div>
+        </form>
+    </div>
+
+     <script>
+        function copyToken(elementId, buttonElement) {
+            const tokenPreElement = document.getElementById(elementId);
+            if (!tokenPreElement) return;
+
+            navigator.clipboard.writeText(tokenPreElement.textContent).then(function() {
+                const originalHTML = buttonElement.innerHTML;
+                buttonElement.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polyline points="20,6 9,17 4,12"></polyline>
+                    </svg>
+                    Copied!
+                `;
+                setTimeout(function() {
+                    buttonElement.innerHTML = originalHTML;
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy token: ', err);
+                alert('Failed to copy token.');
+            });
+        }
+        // Removed trust_tags text area.
+    </script>
+{% endblock %}

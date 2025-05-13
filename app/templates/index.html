@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="dashboard-grid">
+        <div class="welcome-section">
+            <h3>Core Service</h3>
+            <p class="text-subtle">Combined Issuing Entity (IE) and Registry (REG).</p>
+        </div>
+
+        <div class="service-info-card card">
+            <h3>Service Information</h3>
+            <div class="info-row">
+                <span class="info-label">Issuer ID</span>
+                <code>{{ issuer_id }}</code>
+            </div>
+            <div class="info-row">
+                <span class="info-label">JWKS Endpoint</span>
+                <a href="{{ jwks_url }}" class="jwks-link" target="_blank">{{ jwks_url }}</a>
+            </div>
+        </div>
+
+        <div class="jwks-section card">
+            <h3>Current JWKS Content</h3>
+            <pre class="jwks-content">{{ jwks_content_str }}</pre>
+            <button onclick="copyToClipboard('{{ jwks_content_str }}')" class="copy-btn">
+                Copy JWKS
+            </button>
+        </div>
+
+        <div class="actions-grid">
+            <div class="action-card card">
+                <h3>Token Management</h3>
+                <p class="text-subtle">Manage Agent Tokens (ATKs) for the PoC environment</p>
+                <div class="action-buttons">
+                    <a href="{{ url_for('issue_token_form_get') }}" class="button-primary">Issue New ATK</a>
+                    <a href="{{ url_for('revoke_token_form_get') }}" class="button-secondary">Revoke ATK</a>
+                </div>
+            </div>
+
+            <div class="action-card card poc-section">
+                <h3>Phase 2 Features</h3>
+                <p class="text-subtle">Registration flows for Agent Builders and Service Providers (Coming Soon)</p>
+                <div class="action-buttons">
+                    <a href="{{ url_for('register_agent_builder_form_get') }}" class="button-disabled">Agent Builder Registration</a>
+                    <a href="{{ url_for('register_service_provider_form_get') }}" class="button-disabled">Service Provider Registration</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Show a temporary success message
+                const button = event.target;
+                const originalText = button.textContent;
+                button.textContent = 'Copied!';
+                button.style.backgroundColor = '#22c55e';
+                
+                setTimeout(function() {
+                    button.textContent = originalText;
+                    button.style.backgroundColor = '';
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Failed to copy: ', err);
+            });
+        }
+    </script>
+{% endblock %}

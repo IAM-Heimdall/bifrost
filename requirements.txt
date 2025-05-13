@@ -1,0 +1,16 @@
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+pydantic>=2.0.0
+python-jose[cryptography]>=3.3.0
+pymongo>=4.0.0
+python-dotenv>=1.0.0 # For loading .env file
+Jinja2>=3.1.0
+python-multipart
+PyJWT[crypto]
+cryptography
+
+# Add other dependencies as needed, e.g., for specific cryptography backends if not covered
+# For development, you might also include:
+# black
+# flake8
+# pytest

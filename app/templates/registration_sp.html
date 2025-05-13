@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+    {% if message %}
+        <div class="message success">{{ message }}</div>
+    {% endif %}
+    <p>This is a placeholder for Service Providerregistration. In Phase 2, this would involve GitHub login and form submission to save SP details.</p>
+    <form method="post">
+        <label for="ab_name">Service Provider Name:</label>
+        <input type="text" id="ab_name" name="ab_name" required>
+        <button type="submit">Register (PoC)</button>
+    </form>
+{% endblock %}
