@@ -38,7 +38,7 @@ def get_base_template_context(request: Request, title: str) -> Dict:
 
 @router.get("/", response_class=HTMLResponse)
 async def ui_dashboard(request: Request):
-    context = get_base_template_context(request, "AIF Core Service - PoC Dashboard")
+    context = get_base_template_context(request, "Heimdall>Bifrost: Dashboard")
     try:
         jwks_data = get_jwks()
         jwks_url_path = "/.well-known/jwks.json" # Default if url_for fails
@@ -61,7 +61,7 @@ async def ui_dashboard(request: Request):
 
 @router.get("/issue-token", response_class=HTMLResponse)
 async def issue_token_form_get(request: Request):
-    context = get_base_template_context(request, "Issue New ATK (Manual PoC)")
+    context = get_base_template_context(request, "Heimdall>Bifrost: Issue Token")
     context.update({
         "supported_models": SUPPORTED_AI_MODELS,
         "standard_permissions": STANDARD_PERMISSIONS_LIST,
@@ -80,7 +80,7 @@ async def issue_token_form_post(
     model_id: str = Form(...)
     # Removed override_trust_tag_keys, override_trust_tag_values, override_trust_tags_json_str
 ):
-    context = get_base_template_context(request, "Issue New ATK (Manual PoC)")
+    context = get_base_template_context(request, "Heimdall>Bifrost: Issue Token")
     form_data_repopulate = {
         "user_id": user_id, "audience_sp_id": audience_sp_id,
         "permissions_str": input_permissions_str, "purpose": purpose,
@@ -110,14 +110,8 @@ async def issue_token_form_post(
         )
         
         if signed_atk:
-            message = "✅ ATK issued successfully!"
-            if DEFAULT_AIF_TRUST_TAGS:
-                message += f" (Default trust tags applied: {json.dumps(DEFAULT_AIF_TRUST_TAGS)})"
-            else:
-                message += " (No default trust tags configured to be applied.)"
-            message_type = "success"
             issued_atk_val = signed_atk
-            form_data_repopulate = {"model_id": model_id} # Clear for next, keep model
+            form_data_repopulate = {"model_id": model_id}
         else:
             message = "❌ Failed to issue ATK. Check server logs."
         
@@ -141,7 +135,7 @@ async def issue_token_form_post(
 @router.get("/revoke-token", response_class=HTMLResponse)
 async def revoke_token_form_get(request: Request, message: Optional[str] = None, msg_type: Optional[str] = "info"):
     """Displays a form to manually revoke an ATK by JTI, and shows message if redirected."""
-    context = get_base_template_context(request, "Revoke ATK (Manual PoC)")
+    context = get_base_template_context(request, "Heimdall>Bifrost: Revoke ATK")
     current_revoked_jtis_processed = []
     try:
         revoked_collection = get_revoked_tokens_collection()

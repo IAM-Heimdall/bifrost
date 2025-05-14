@@ -1,7 +1,23 @@
 {% extends "base.html" %}
 
 {% block content %}
-    {% if message %} {# Display messages passed from the POST handler #}
+    {% if issued_atk %}
+        <div class="token-result-card card">
+            <h3>Generated ATK</h3>
+            <div class="token-container">
+                <pre class="token-display" id="issuedAtkPre">{{ issued_atk }}</pre>
+                <button onclick="copyToken('issuedAtkPre', this)" class="copy-btn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    Copy Token
+                </button>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if message and not issued_atk %} {# Only show message if no token was issued #}
         <div class="alert alert-{{ message_type or 'info' }}">
              <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 {% if message_type == 'success' %}
@@ -20,23 +36,7 @@
         </div>
     {% endif %}
 
-    {% if issued_atk %}
-        <div class="token-result-card card">
-            <h3>Generated ATK</h3>
-            <div class="token-container">
-                <pre class="token-display" id="issuedAtkPre">{{ issued_atk }}</pre>
-                <button onclick="copyToken('issuedAtkPre', this)" class="copy-btn">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                    </svg>
-                    Copy Token
-                </button>
-            </div>
-        </div>
-    {% endif %}
-
-    <div class="form-card card">
+    <div class="issue-form-card">
         <form method="post" class="token-form">
             <h2>Issue New Agent Token (ATK)</h2>
             
@@ -65,9 +65,9 @@
             </div>
 
             <div class="form-group">
-                <label for="permissions">Permissions</label> {# Changed alias from permissions_str to permissions #}
+                <label for="permissions">Permissions</label>
                 <textarea id="permissions" 
-                          name="permissions" {# This name 'permissions' now directly matches input_permissions_str alias #}
+                          name="permissions"
                           rows="3" 
                           placeholder="e.g., read:articles_all,summarize:text_content_short" 
                           required>{{ form_data.permissions_str if form_data else 'read:articles_all,summarize:text_content_short' }}</textarea>
@@ -101,17 +101,9 @@
                 </div>
             </div>
 
-            {# --- SIMPLIFIED Trust Tags Section --- #}
             <div class="trust-tags-section">
                 <h3>Metadata: Trust Tags</h3>
-                {% if default_trust_tags_info and default_trust_tags_info | length > 0 %}
-                    <p class="text-subtle">All ATKs generated via this UI will currently include the following default trust tags from settings:
-                        <pre style="font-size: 0.9em; margin-top: 5px;">{{ default_trust_tags_info | tojson(indent=2) }}</pre>
-                    </p>
-                {% else %}
-                    <p class="text-subtle">No default trust tags are currently configured to be added to the ATK.</p>
-                {% endif %}
-                <p class="text-subtle"><em>Trust tags coming soon in a future update.</em></p>
+                <p class="text-subtle">Coming soon. Default values used now.</p>
             </div>
 
             <div class="form-actions">
@@ -147,6 +139,5 @@
                 alert('Failed to copy token.');
             });
         }
-        // Removed trust_tags text area.
     </script>
 {% endblock %}

@@ -21,10 +21,18 @@ REVOKED_TOKENS_COLLECTION_NAME: str = "revoked_atks"
 
 # --- AI Model Configuration ---
 SUPPORTED_AI_MODELS: List[str] = [
-    "general-text-v1",
-    "code-gen-alpha",
-    "image-analysis-beta",
-    "poc-model-x"
+    "gpt-4-turbo",                            # OpenAI
+    "gpt-3.5-turbo",                          # OpenAI
+    "claude-3-opus-20240229",                # Anthropic
+    "claude-3-sonnet-20240229",              # Anthropic
+    "gemini-1.5-pro-latest",                 # Google DeepMind
+    "meta-llama/Meta-Llama-3-70B-Instruct",  # Meta (LLaMA 3)
+    "mistralai/Mistral-7B-Instruct-v0.2",     # Mistral
+    "mistralai/Mixtral-8x7B-Instruct-v0.1",   # Mistral (MoE)
+    "command-r-plus",                         # Cohere
+    "HuggingFaceH4/zephyr-7b-alpha",          # Hugging Face
+    "openchat/openchat-3.5-0106",             # Hugging Face (OpenChat)
+    "microsoft/phi-2"                         # Microsoft
 ]
 
 # --- PERMISSION CONFIGURATION ---

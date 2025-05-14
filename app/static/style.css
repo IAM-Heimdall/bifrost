@@ -266,6 +266,7 @@ body {
 
 .content-header {
     margin-bottom: 24px;
+    margin-left: 40px;
 }
 
 .content-header h1 {
@@ -275,7 +276,11 @@ body {
     margin: 0;
 }
 
+/* Consistent page width positioned left */
 .content-body {
+    max-width: 800px; 
+    margin-left: 40px;
+    margin-right: auto;
     background-color: var(--color-bg);
     border-radius: var(--radius-lg);
     padding: 24px;
@@ -320,7 +325,7 @@ body {
 
 /* Form Styles */
 form {
-    max-width: 600px;
+    max-width: 100%;
 }
 
 label {
@@ -456,10 +461,13 @@ code {
 /* Cards */
 .card {
     background-color: var(--color-bg);
-    border: 1px solid var(--color-border);
+    border: 0px solid var(--color-border);
     border-radius: var(--radius-lg);
     padding: 24px;
     box-shadow: var(--shadow-sm);
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 10px;
 }
 
 /* Utility Classes */
@@ -505,6 +513,11 @@ code {
         margin-left: 0;
     }
     
+    .content-header {
+        margin-left: 16px;
+    }
+    
+    
     .top-nav {
         padding: 0 16px;
     }
@@ -536,6 +549,10 @@ code {
 .dashboard-grid {
     display: grid;
     gap: 24px;
+    max-width: 800px;
+    width: 100%;
+    margin-left: 40px;
+    margin-right: auto;
 }
 
 .welcome-section h2 {
@@ -588,6 +605,7 @@ code {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 24px;
     margin-top: 24px;
+    width: 100%;
 }
 
 .action-card h3 {
@@ -649,10 +667,15 @@ code {
 }
 
 /* Issue Token Page Styles */
-.token-result-card {
+.token-result-card, issue-form-card {
+    max-width: 800px;
+    margin-left: 40px;
+    margin-right: auto;
     margin-bottom: 24px;
     border: 2px solid var(--color-success);
     background-color: #f0f9ff;
+    width: 800px; /* Force exact width */
+    box-sizing: border-box;
 }
 
 .token-container {
@@ -671,10 +694,13 @@ code {
     max-height: 200px;
     overflow-y: auto;
     margin-bottom: 12px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .form-card {
-    max-width: 800px;
+    max-width: none;
+    width: 100%;
 }
 
 .token-form h2 {
@@ -769,9 +795,33 @@ code {
 }
 
 /* Revoke Token Page Styles */
-.revoke-section {
-    max-width: 900px;
+
+.revoked-tokens-section {
+    max-width: 800px;
+    margin-left: 40px;
+    margin-right: auto;
+    width: 800px; /* Force exact width */
 }
+
+.revoke-section {
+    max-width: 800px;
+    margin-left: 40px;
+    margin-right: auto;
+    width: 800px; /* Force exact width */
+    padding-bottom: 20px;
+}
+
+
+.revoke-section > div {
+    margin-bottom: 24px;
+}
+
+.revoke-section > .card {
+    border: none;
+    box-shadow: none;
+    padding-bottom: 20px;
+}
+
 
 .revoke-form h2 {
     margin-bottom: 8px;
@@ -894,43 +944,6 @@ code {
     margin: 0;
 }
 
-/* Responsive Design for Dashboard */
-@media (max-width: 768px) {
-    .actions-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-    }
-    
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-    
-    .trust-tags-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .form-actions {
-        flex-direction: column;
-    }
-    
-    .table-container {
-        margin-top: 16px;
-    }
-    
-    .revoked-tokens-table th,
-    .revoked-tokens-table td {
-        padding: 8px 12px;
-    }
-    
-    .jti-code {
-        font-size: 11px;
-        padding: 3px 6px;
-    }
-}
-
 /* Trust tags styling */
 .trust-tags-section {
     margin-top: 24px;
@@ -969,3 +982,46 @@ button.copy-btn {
 button.copy-btn:hover {
     background-color: var(--color-bg-muted);
 }
+
+/* Mobile responsive adjustments */
+@media (max-width: 860px) {
+    .actions-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .trust-tags-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .table-container {
+        margin-top: 16px;
+    }
+    
+    .revoked-tokens-table th,
+    .revoked-tokens-table td {
+        padding: 8px 12px;
+    }
+    
+    .jti-code {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+    
+    .dashboard-grid {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+}
+

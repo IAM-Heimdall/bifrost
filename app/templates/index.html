@@ -3,7 +3,7 @@
 {% block content %}
     <div class="dashboard-grid">
         <div class="welcome-section">
-            <h3>Core Service</h3>
+            <h2>Core Service</h2>
             <p class="text-subtle">Combined Issuing Entity (IE) and Registry (REG).</p>
         </div>
 
@@ -21,8 +21,8 @@
 
         <div class="jwks-section card">
             <h3>Current JWKS Content</h3>
-            <pre class="jwks-content">{{ jwks_content_str }}</pre>
-            <button onclick="copyToClipboard('{{ jwks_content_str }}')" class="copy-btn">
+            <pre class="jwks-content" id="jwksContent">{{ jwks_content_str }}</pre>
+            <button onclick="copyToClipboard()" class="copy-btn">
                 Copy JWKS
             </button>
         </div>
@@ -36,33 +36,31 @@
                     <a href="{{ url_for('revoke_token_form_get') }}" class="button-secondary">Revoke ATK</a>
                 </div>
             </div>
-
-            <div class="action-card card poc-section">
-                <h3>Phase 2 Features</h3>
-                <p class="text-subtle">Registration flows for Agent Builders and Service Providers (Coming Soon)</p>
-                <div class="action-buttons">
-                    <a href="{{ url_for('register_agent_builder_form_get') }}" class="button-disabled">Agent Builder Registration</a>
-                    <a href="{{ url_for('register_service_provider_form_get') }}" class="button-disabled">Service Provider Registration</a>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-        function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function() {
-                // Show a temporary success message
-                const button = event.target;
+        function copyToClipboard() {
+            // Get the JWKS content from the pre element
+            const jwksElement = document.getElementById('jwksContent');
+            const jwksText = jwksElement.textContent;
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(jwksText).then(function() {
+                // Show success feedback
+                const button = document.querySelector('.copy-btn');
                 const originalText = button.textContent;
                 button.textContent = 'Copied!';
-                button.style.backgroundColor = '#22c55e';
                 
+                // Reset after 2 seconds
                 setTimeout(function() {
                     button.textContent = originalText;
                     button.style.backgroundColor = '';
+                    button.style.color = '';
                 }, 2000);
             }).catch(function(err) {
                 console.error('Failed to copy: ', err);
+                alert('Copy failed. Please select and copy manually.');
             });
         }
     </script>
