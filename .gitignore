@@ -42,3 +42,5 @@ htmlcov/
 .ipynb_checkpoints/
 
 keys_poc/
+
+localrun.py

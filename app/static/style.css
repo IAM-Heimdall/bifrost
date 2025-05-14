@@ -266,7 +266,6 @@ body {
 
 .content-header {
     margin-bottom: 24px;
-    margin-left: 40px;
 }
 
 .content-header h1 {
@@ -279,7 +278,6 @@ body {
 /* Consistent page width positioned left */
 .content-body {
     max-width: 800px; 
-    margin-left: 40px;
     margin-right: auto;
     background-color: var(--color-bg);
     border-radius: var(--radius-lg);
@@ -551,7 +549,6 @@ code {
     gap: 24px;
     max-width: 800px;
     width: 100%;
-    margin-left: 40px;
     margin-right: auto;
 }
 
@@ -669,7 +666,6 @@ code {
 /* Issue Token Page Styles */
 .token-result-card, issue-form-card {
     max-width: 800px;
-    margin-left: 40px;
     margin-right: auto;
     margin-bottom: 24px;
     border: 2px solid var(--color-success);
@@ -798,14 +794,12 @@ code {
 
 .revoked-tokens-section {
     max-width: 800px;
-    margin-left: 40px;
     margin-right: auto;
     width: 800px; /* Force exact width */
 }
 
 .revoke-section {
     max-width: 800px;
-    margin-left: 40px;
     margin-right: auto;
     width: 800px; /* Force exact width */
     padding-bottom: 20px;
