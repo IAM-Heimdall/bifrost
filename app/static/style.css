@@ -665,7 +665,7 @@ code {
 
 /* Issue Token Page Styles */
 .token-result-card, issue-form-card {
-    max-width: 800px;
+    max-width: 780px;
     margin-right: auto;
     margin-bottom: 24px;
     border: 2px solid var(--color-success);
@@ -674,9 +674,6 @@ code {
     box-sizing: border-box;
 }
 
-.token-container {
-    position: relative;
-}
 
 .token-display {
     font-family: var(--font-mono);
