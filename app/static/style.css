@@ -2192,3 +2192,13 @@ button.copy-btn:hover {
         justify-content: center;
     }
 }
+
+.github-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--color-border);
+    box-shadow: var(--shadow-sm);
+    flex-shrink: 0;
+}
