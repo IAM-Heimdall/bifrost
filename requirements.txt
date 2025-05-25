@@ -1,16 +1,32 @@
+# Core framework
 fastapi>=0.100.0
 uvicorn[standard]>=0.23.0
 pydantic>=2.0.0
-python-jose[cryptography]>=3.3.0
-pymongo>=4.0.0
-python-dotenv>=1.0.0 # For loading .env file
-Jinja2>=3.1.0
-python-multipart
-PyJWT[crypto]
-cryptography
+pydantic[email]
 
-# Add other dependencies as needed, e.g., for specific cryptography backends if not covered
-# For development, you might also include:
-# black
-# flake8
-# pytest
+# Web and HTTP
+httpx>=0.24.0  # For GitHub API requests
+
+# Authentication and security
+python-jose[cryptography]>=3.3.0
+PyJWT[crypto]>=2.4.0
+cryptography>=3.4.8
+itsdangerous>=2.0.1  # For session management
+starlette>=0.27.0
+
+
+# Database
+pymongo>=4.0.0
+
+# Templates and forms
+Jinja2>=3.1.0
+python-multipart>=0.0.5  # For form handling 
+
+# Configuration
+python-dotenv>=1.0.0  # For loading .env file
+
+# Optional development tools
+# pytest>=7.0.0
+# pytest-asyncio>=0.21.0
+# black>=23.0.0
+# flake8>=6.0.0

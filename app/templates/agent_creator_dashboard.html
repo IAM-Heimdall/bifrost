@@ -1,0 +1,167 @@
+<!-- app/templates/agent_creator_dashboard.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-section">
+    <h3>Agent Creators</h3>
+    
+    
+    <div class="agent-creators-section">
+        <p class="subtitle">Add traceable identity and trust to AI agents <span class="experimental-tag">[experimental version]</span></p>
+        
+        <div class="get-started-section">
+            <h4>GET STARTED</h4>
+            
+            <div class="api-token-section">
+                <h5><strong>1. Generate an API Token</strong></h5>
+                <p class="text-subtle">To communicate with the SDK or APIs</p>
+                
+                <!-- Default state: Show "Generate new token" button -->
+                <div id="tokenGenerationButton">
+                    <button id="generateTokenBtn" class="btn-primary">Generate new token</button>
+                </div>
+
+                <!-- Token display state (hidden by default) -->
+                <div id="tokenDisplayArea" style="display: none;">
+                    <div class="token-display">
+                        <input type="text" id="apiTokenField" value="" readonly class="token-field">
+                        <button id="copyTokenBtn" class="btn-secondary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            Copy token
+                        </button>
+                    </div>
+                    <div class="token-warning">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                        </svg>
+                        <p>Copy and save this token securely. You will not see this again.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="sdk-section">
+                <h5><strong>2. Setup using the SDK</strong></h5>
+                <p class="text-subtle">Ready-made libraries to generate Agent IDs, Agent Tokens (ATKs) and Revoke tokens.</p>
+                
+                <div class="sdk-option">
+                    <div class="sdk-icon">
+                        <img src="{{ url_for('static', path='/assets/python-logo.png') }}" alt="Python" width="48">
+                    </div>
+                    <div class="sdk-details">
+                        <span>Python</span>
+                        <p class="sdk-note">More coming soon.<br>Link redirects to GitHub</p>
+                    </div>
+                </div>
+                
+                <a href="#" class="api-reference-link">View API Reference</a>
+            </div>
+            
+            <div class="note-section">
+                <p class="note">Note: You can also test and issue Agent tokens (ATKs) and revoke them from this dashboard</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Token Generation Modal -->
+<div id="tokenModal" class="modal">
+    <div class="modal-content">
+        <h3>Generating a new token will immediately invalidate previous tokens.</h3>
+        <p>Are you sure you want to generate a new token?</p>
+        <div class="modal-actions">
+            <button id="confirmTokenGen" class="btn-danger">Generate new API token</button>
+            <button id="cancelTokenGen" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Elements
+    const generateTokenBtn = document.getElementById('generateTokenBtn');
+    const tokenModal = document.getElementById('tokenModal');
+    const confirmTokenGen = document.getElementById('confirmTokenGen');
+    const cancelTokenGen = document.getElementById('cancelTokenGen');
+    const tokenGenerationButton = document.getElementById('tokenGenerationButton');
+    const tokenDisplayArea = document.getElementById('tokenDisplayArea');
+    const apiTokenField = document.getElementById('apiTokenField');
+    const copyTokenBtn = document.getElementById('copyTokenBtn');
+    
+    // Show the token generation confirmation modal
+    if (generateTokenBtn) {
+        generateTokenBtn.addEventListener('click', function() {
+            tokenModal.style.display = 'flex';
+        });
+    }
+    
+    // Handle modal cancelation
+    if (cancelTokenGen) {
+        cancelTokenGen.addEventListener('click', function() {
+            tokenModal.style.display = 'none';
+        });
+    }
+    
+    // Handle token generation confirmation
+    if (confirmTokenGen) {
+        confirmTokenGen.addEventListener('click', async function() {
+            try {
+                // Close the modal
+                tokenModal.style.display = 'none';
+                
+                // Call the API to generate a new token
+                const response = await fetch('/ui/generate-token', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show the token
+                    apiTokenField.value = data.api_token;
+                    tokenGenerationButton.style.display = 'none';
+                    tokenDisplayArea.style.display = 'block';
+                } else {
+                    alert('Error generating token: ' + (data.error || 'Unknown error'));
+                }
+            } catch (error) {
+                console.error('Error generating token:', error);
+                alert('Failed to generate new token. Please try again later.');
+            }
+        });
+    }
+    
+    // Copy token to clipboard
+    if (copyTokenBtn) {
+        copyTokenBtn.addEventListener('click', function() {
+            apiTokenField.select();
+            document.execCommand('copy');
+            
+            const originalHTML = copyTokenBtn.innerHTML;
+            copyTokenBtn.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                Copied!
+            `;
+            
+            setTimeout(function() {
+                copyTokenBtn.innerHTML = originalHTML;
+            }, 2000);
+        });
+    }
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === tokenModal) {
+            tokenModal.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

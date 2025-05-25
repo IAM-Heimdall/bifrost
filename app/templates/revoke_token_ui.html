@@ -1,90 +1,103 @@
+<!-- app/templates/revoke_token_ui.html (updated) -->
 {% extends "base.html" %}
 
 {% block content %}
-    <div class="revoke-section">
-        <div class="card">
-            <form method="post" class="revoke-form">
-                <h2>Revoke ATK by JTI</h2>
-                <p class="text-subtle">Enter the JWT ID (JTI) of the token you want to revoke</p>
-                
-                <div class="form-group">
-                    <label for="jti">JWT ID (JTI)</label>
-                    <input type="text" 
-                           id="jti" 
-                           name="jti" 
-                           placeholder="Enter the JTI to revoke"
-                           required
-                           class="jti-input">
-                    <p class="field-description">The unique identifier of the JWT to be revoked</p>
-                </div>
-
-                <div class="form-actions">
-                    <button type="submit" class="btn-primary btn-danger">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="11 2 13 2 13 22 11 22"></polygon>
-                            <path d="m7 7 5-5 5 5"></path>
-                            <path d="m7 17 5 5 5-5"></path>
-                        </svg>
-                        Revoke Token
-                    </button>
-                </div>
-            </form>
-        </div>
-        <br><br>
-
-        <div class="revoked-tokens-section">
-            <div class="card">
-                <h3>Recently Revoked Tokens</h3>
-                <p class="text-subtle">Showing the 20 most recently revoked JTIs</p>
-                
-                {% if current_revoked_jtis %}
-                    <div class="table-container">
-                        <table class="revoked-tokens-table">
-                            <thead>
-                                <tr>
-                                    <th>JTI</th>
-                                    <th>Revoked At</th>
-                                    <th>Original Expiry</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for item in current_revoked_jtis %}
-                                <tr>
-                                    <td>
-                                        <code class="jti-code">{{ item.jti }}</code>
-                                    </td>
-                                    <td>
-                                        {% if item.revoked_at %}
-                                            <span class="timestamp">{{ item.revoked_at.strftime('%Y-%m-%d %H:%M:%S') }}</span>
-                                            <span class="timezone">UTC</span>
-                                        {% else %}
-                                            <span class="no-data">N/A</span>
-                                        {% endif %}
-                                    </td>
-                                    <td>
-                                        {% if item.original_exp_ts %}
-                                            <span class="timestamp">{{ item.original_exp_ts.strftime('%Y-%m-%d %H:%M:%S') if item.original_exp_ts is not number else 'N/A' }}</span>
-                                            <span class="timezone">UTC</span>
-                                        {% else %}
-                                            <span class="no-data">N/A</span>
-                                        {% endif %}
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                {% else %}
-                    <div class="empty-state">
-                        <svg class="empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <circle cx="11" cy="11" r="8"></circle>
-                            <path d="m21 21-4.35-4.35"></path>
-                        </svg>
-                        <h4>No revoked tokens found</h4>
-                        <p>There are currently no JTIs in the revocation list, or the revocation list could not be accessed.</p>
-                    </div>
-                {% endif %}
+<div class="revoke-token-section">
+    <div class="revoke-form-card card">
+        <h3>Revoke Agent Token</h3>
+        <p class="text-subtle">Add a token to the revocation list by its JWT ID (jti).</p>
+        
+        <form method="post" class="revoke-form">
+            <div class="form-group">
+                <label for="jti">JWT ID (JTI)</label>
+                <input type="text" 
+                       id="jti" 
+                       name="jti" 
+                       placeholder="Enter the JTI to revoke"
+                       required
+                       class="jti-input">
+                <p class="field-description">The unique identifier of the JWT to be revoked. Find this in the JWT payload.</p>
             </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary btn-danger">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="11 2 13 2 13 22 11 22"></polygon>
+                        <path d="m7 7 5-5 5 5"></path>
+                        <path d="m7 17 5 5 5-5"></path>
+                    </svg>
+                    Revoke Token
+                </button>
+            </div>
+        </form>
+        
+        <div class="revocation-explanation">
+            <h4>What happens when you revoke a token?</h4>
+            <ul>
+                <li>The token is added to the revocation list</li>
+                <li>Service providers can check this list to reject revoked tokens</li>
+                <li>Even if the token hasn't expired, it will be considered invalid</li>
+                <li>This action cannot be undone</li>
+            </ul>
         </div>
     </div>
+
+    <div class="revoked-tokens-section card">
+        <h3>Recently Revoked Tokens</h3>
+        <p class="text-subtle">Showing tokens that you have revoked.</p>
+        
+        {% if revoked_tokens and revoked_tokens|length > 0 %}
+            <div class="table-container">
+                <table class="revoked-tokens-table">
+                    <thead>
+                        <tr>
+                            <th>JWT ID</th>
+                            <th>Agent ID</th>
+                            <th>Audience</th>
+                            <th>Revoked At</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for token in revoked_tokens %}
+                        <tr>
+                            <td>
+                                <code class="jti-code">{{ token.jti }}</code>
+                            </td>
+                            <td>
+                                {% if token.aid %}
+                                <code class="aid-code" title="{{ token.aid }}">{{ token.aid.split('/')[-1][:8] }}...</code>
+                                {% else %}
+                                <span class="no-data">Unknown</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if token.audience %}
+                                <code title="{{ token.audience }}">{{ token.audience[:15] }}{% if token.audience|length > 15 %}...{% endif %}</code>
+                                {% else %}
+                                <span class="no-data">Unknown</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if token.revoked_at %}
+                                    <span class="timestamp">{{ token.revoked_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                                {% else %}
+                                    <span class="no-data">Unknown</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <svg class="empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <p>No tokens have been revoked by you yet.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

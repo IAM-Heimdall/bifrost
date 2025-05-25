@@ -1,0 +1,63 @@
+<!-- app/templates/register_complete.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="register-container">
+    <div class="register-card card">
+        <div class="github-user-info">
+            <img src="{{ github_user.avatar_url }}" alt="GitHub Avatar" class="github-avatar">
+            <div class="github-details">
+                <h2>Welcome, {{ github_user.name }}!</h2>
+                <p class="github-username">@{{ github_user.github_username if github_user.github_username else '' }}</p>
+                <p class="text-subtle">{{ github_user.email }}</p>
+            </div>
+        </div>
+
+        <form method="post" class="registration-form">
+            <h3>Complete Your Registration</h3>
+            
+            {% if error %}
+                <div class="alert alert-error">
+                    <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    {{ error }}
+                </div>
+            {% endif %}
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="organization_name">Organization Name</label>
+                    <input type="text" 
+                           id="organization_name" 
+                           name="organization_name" 
+                           required
+                           placeholder="ACME Corporation">
+                    <p class="field-description">The organization you represent as an Agent Builder.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="website">Website (Optional)</label>
+                <input type="url" 
+                       id="website" 
+                       name="website" 
+                       placeholder="https://www.example.com">
+                <p class="field-description">Your organization's website.</p>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-primary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m9 12 2 2 4-4"></path>
+                        <path d="M21 12c.552 0 1-.448 1-1V8c0-.552-.448-1-1-1h-3.586l-1.707-1.707c-.391-.391-1.023-.391-1.414 0L13.586 7H10.414l-1.707-1.707c-.391-.391-1.023-.391-1.414 0L5.586 7H2c-.552 0-1 .448-1 1v3c0 .552.448 1 1 1h3.586l1.707 1.707c.391.391 1.023.391 1.414 0L10.414 12H21z"></path>
+                    </svg>
+                    Complete Registration
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

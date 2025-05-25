@@ -1,34 +1,49 @@
+<!-- app/templates/base.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }} - AIF PoC</title>
+    <title>{{ title }} - IAM Heimdall</title>
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ url_for('static', path='/assets/favicon.png') }}">
     
     <link rel="stylesheet" href="{{ url_for('static', path='/style.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Top Navigation Bar -->
     <div class="top-nav">
         <div class="logo">
-            <img src="{{ url_for('static', path='/assets/logo.png') }}" alt="AIF Logo">
-            <span>IAM Heimdall</span>
+                <img src="{{ url_for('static', path='/assets/logo.png') }}" alt="IAM Heimdall Logo">
+                <span>IAM Heimdall</span>
+            </a>
         </div>
         
         <div class="user-menu">
-            <div class="user-avatar">
-                <span>AD</span>
-                <div class="user-dropdown">
-                    <span>Admin User</span>
-                    <ul>
-                        <li><a href="#settings">Settings</a></li>
-                        <li><a href="#logout">Logout</a></li>
-                    </ul>
+            {% if current_user %}
+                <div class="user-avatar">
+                    <span>{{ current_user.name[:2].upper() if current_user.name else 'AB' }}</span>
+                    <div class="user-dropdown">
+                        <ul>
+                            <li><a href="{{ url_for('ui_dashboard_dispatch') }}">Dashboard</a></li>
+                            <li><a href="{{ url_for('profile_page') }}">Profile</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/auth/logout">Logout</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            {% else %}
+                <div class="login-info">
+                    <span>Agent Creator &gt;</span>
+                    <a href="/auth/github/login" class="login-btn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                        </svg>
+                        Sign up with GitHub
+                    </a>
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -37,22 +52,49 @@
         <!-- Sidebar -->
         <div class="sidebar">
             <nav>
+                <!-- Section: Everyone -->
                 <section>
-                    <h3>Core Functions</h3>
+                    <h3>EVERYONE</h3>
                     <ul>
                         <li>
-                            <a href="{{ url_for('ui_dashboard') }}" class="nav-item {% if request.url.path == '/ui/' %}active{% endif %}">
+                            <a href="{{ url_for('verify_agents_public') }}" class="nav-item {% if active_section == 'verify-agents' %}active{% endif %}">
+                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 22s8-4 8-10V6l-8-3-8 3v6c0 6 8 10 8 10z"></path>
+                                </svg>
+                                Verify Agents
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('revoked_tokens_check_form') }}" class="nav-item {% if active_section == 'revoked-tokens' %}active{% endif %}">
+                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="11 2 13 2 13 22 11 22"></polygon>
+                                    <path d="m7 7 5-5 5 5"></path>
+                                    <path d="m7 17 5 5 5-5"></path>
+                                </svg>
+                                Revoked Tokens
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+                
+                <!-- Section: Agent Creator (Authenticated Only) -->
+                {% if current_user %}
+                <section class="separator">
+                    <h3>AGENT CREATOR</h3>
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('ui_dashboard_dispatch') }}" class="nav-item {% if active_section == 'dashboard' %}active{% endif %}">
                                 <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <rect x="3" y="3" width="7" height="7"></rect>
                                     <rect x="14" y="3" width="7" height="7"></rect>
                                     <rect x="14" y="14" width="7" height="7"></rect>
                                     <rect x="3" y="14" width="7" height="7"></rect>
                                 </svg>
-                                Dashboard
+                                Home
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url_for('issue_token_form_get') }}" class="nav-item {% if 'issue-token' in request.url.path %}active{% endif %}">
+                            <a href="{{ url_for('issue_token_form_get') }}" class="nav-item {% if active_section == 'issue-token' %}active{% endif %}">
                                 <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <circle cx="12" cy="12" r="10"></circle>
                                     <polyline points="12,6 12,12 16,14"></polyline>
@@ -61,7 +103,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="{{ url_for('revoke_token_form_get') }}" class="nav-item {% if 'revoke-token' in request.url.path %}active{% endif %}">
+                            <a href="{{ url_for('revoke_token_form_get') }}" class="nav-item {% if active_section == 'revoke-token' %}active{% endif %}">
                                 <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <polygon points="11 2 13 2 13 22 11 22"></polygon>
                                     <path d="m7 7 5-5 5 5"></path>
@@ -73,49 +115,64 @@
                     </ul>
                 </section>
                 
+                <!-- Section: Settings -->
                 <section class="separator">
-                    <h3>Coming Soon</h3>
+                    <h3>SETTINGS</h3>
                     <ul>
                         <li>
-                            <a href="{{ url_for('register_agent_builder_form_get') }}" class="nav-item disabled">
+                            <a href="{{ url_for('profile_page') }}" class="nav-item {% if active_section == 'profile' %}active{% endif %}">
                                 <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
                                 </svg>
-                                Agent Builder
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('register_service_provider_form_get') }}" class="nav-item disabled">
-                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 22s8-4 8-10V6l-8-3-8 3v6c0 6 8 10 8 10z"></path>
-                                </svg>
-                                Service Provider
+                                Profile
                             </a>
                         </li>
                     </ul>
                 </section>
+                {% else %}
+                <!-- Section: Agent Creator (Not Authenticated) -->
+                <section class="separator">
+                    <h3>AGENT CREATOR</h3>
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('start_here_page') }}" class="nav-item {% if active_section == 'start-here' %}active{% endif %}">
+                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+                                    <polyline points="10 17 15 12 10 7"></polyline>
+                                    <line x1="15" y1="12" x2="3" y2="12"></line>
+                                </svg>
+                                Start Here
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+                {% endif %}
             </nav>
         </div>
 
         <!-- Main Content -->
         <div class="main-content">
-            {% if message %}
-                <div class="alert alert-{{ message_type or 'info' }}">
+            {% if status_message or message %}
+                <div class="alert alert-{{ status_message_type or message_type or 'info' }}">
                     <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        {% if message_type == 'success' %}
+                        {% if status_message_type == 'success' or message_type == 'success' %}
                             <polyline points="20,6 9,17 4,12"></polyline>
-                        {% elif message_type == 'error' %}
+                        {% elif status_message_type == 'error' or message_type == 'error' %}
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="15" y1="9" x2="9" y2="15"></line>
                             <line x1="9" y1="9" x2="15" y2="15"></line>
+                        {% elif status_message_type == 'warning' or message_type == 'warning' %}
+                            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                            <line x1="12" y1="9" x2="12" y2="13"></line>
+                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
                         {% else %}
                             <circle cx="12" cy="12" r="10"></circle>
                             <line x1="12" y1="8" x2="12" y2="12"></line>
                             <line x1="12" y1="16" x2="12.01" y2="16"></line>
                         {% endif %}
                     </svg>
-                    {{ message }}
+                    {{ status_message or message }}
                 </div>
             {% endif %}
             
@@ -129,8 +186,24 @@
         </div>
     </div>
 
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="{{ url_for('static', path='/assets/logo.png') }}" alt="IAM Heimdall Logo" width="24">
+                <span>IAM Heimdall</span>
+            </div>
+            <div class="footer-links">
+                <a href="{{ url_for('documentation_page') }}">Documentation</a>
+                <a href="https://github.com/example/heimdall" target="_blank">GitHub</a>
+                <a href="mailto:support@iamheimdall.com">Support</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Common JavaScript -->
     <script>
-        // Simple toggle for user dropdown
+        // User dropdown toggle
         document.addEventListener('DOMContentLoaded', function() {
             const userAvatar = document.querySelector('.user-avatar');
             const userDropdown = document.querySelector('.user-dropdown');
@@ -145,7 +218,43 @@
                     userDropdown.style.display = 'none';
                 });
             }
+
+            // Copy button functionality
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            if (copyButtons) {
+                copyButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        const textToCopy = this.previousElementSibling.textContent.trim();
+                        navigator.clipboard.writeText(textToCopy).then(() => {
+                            const originalText = this.textContent;
+                            this.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
+                            
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                        });
+                    });
+                });
+            }
+
+            // Auto-dismiss alerts after 5 seconds
+            const alerts = document.querySelectorAll('.alert:not(.alert-error)');
+            if (alerts.length > 0) {
+                setTimeout(() => {
+                    alerts.forEach(alert => {
+                        alert.classList.add('fade-out');
+                        setTimeout(() => {
+                            alert.style.display = 'none';
+                        }, 500);
+                    });
+                }, 5000);
+            }
         });
     </script>
+
+    <!-- Additional page-specific JavaScript can be added in the content block of individual templates -->
+    {% block page_scripts %}{% endblock %}
 </body>
 </html>

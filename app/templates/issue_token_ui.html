@@ -1,6 +1,8 @@
+<!-- app/templates/issue_token_ui.html (updated) -->
 {% extends "base.html" %}
 
 {% block content %}
+<div class="issue-token-section">
     {% if issued_atk %}
         <div class="token-result-card card">
             <h3>Generated ATK</h3>
@@ -17,28 +19,9 @@
         </div>
     {% endif %}
 
-    {% if message and not issued_atk %} {# Only show message if no token was issued #}
-        <div class="alert alert-{{ message_type or 'info' }}">
-             <svg class="alert-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                {% if message_type == 'success' %}
-                    <polyline points="20,6 9,17 4,12"></polyline>
-                {% elif message_type == 'error' %}
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="15" y1="9" x2="9" y2="15"></line>
-                    <line x1="9" y1="9" x2="15" y2="15"></line>
-                {% else %}
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
-                {% endif %}
-            </svg>
-            {{ message }}
-        </div>
-    {% endif %}
-
-    <div class="issue-form-card">
+    <div class="issue-form-card card">
         <form method="post" class="token-form">
-            <h2>Issue New Agent Token (ATK)</h2>
+            <h3>Issue New Agent Token</h3>
             
             <div class="form-row">
                 <div class="form-group">
@@ -71,8 +54,9 @@
                           rows="3" 
                           placeholder="e.g., read:articles_all,summarize:text_content_short" 
                           required>{{ form_data.permissions_str if form_data else 'read:articles_all,summarize:text_content_short' }}</textarea>
-                <p class="field-description">Comma-separated list of permissions (e.g., action:resource). <br>
-                    Available standard examples: {{ standard_permissions | join(', ') }}. Custom allowed for PoC.
+                <p class="field-description">
+                    Comma-separated list of permissions (e.g., action:resource). 
+                    <br>Available standard examples: {{ standard_permissions | join(', ') }}
                 </p>
             </div>
             
@@ -82,7 +66,7 @@
                     <input type="text" 
                            id="purpose" 
                            name="purpose" 
-                           value="{{ form_data.purpose if form_data else 'PoC News Summary Task' }}" 
+                           value="{{ form_data.purpose if form_data else 'News Summary Task' }}" 
                            placeholder="Describe the intended use of this token"
                            required>
                 </div>
@@ -101,11 +85,6 @@
                 </div>
             </div>
 
-            <div class="trust-tags-section">
-                <h3>Metadata: Trust Tags</h3>
-                <p class="text-subtle">Coming soon. Default values used now.</p>
-            </div>
-
             <div class="form-actions">
                 <button type="submit" class="btn-primary">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -118,26 +97,73 @@
         </form>
     </div>
 
-     <script>
-        function copyToken(elementId, buttonElement) {
-            const tokenPreElement = document.getElementById(elementId);
-            if (!tokenPreElement) return;
+    <div class="issued-tokens-section card">
+        <h3>Issued Tokens</h3>
+        <p class="text-subtle">Tokens issued by you that are currently active.</p>
+    
+        {% if issued_tokens and issued_tokens|length > 0 %}
+            <div class="table-container">
+                <table class="tokens-table">
+                    <thead>
+                        <tr>
+                            <th>Agent ID</th>
+                            <th>Audience</th>
+                            <th>Issued</th>
+                            <th>Expires</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for token in issued_tokens %}
+                            <tr>
+                                <td title="{{ token.aid }}">
+                                    <code class="aid-code">{{ token.aid.split('/')[-1][:8] }}...</code>
+                                </td>
+                                <td title="{{ token.audience }}">
+                                    <code>{{ token.audience[:15] }}{% if token.audience|length > 15 %}...{% endif %}</code>
+                                </td>
+                                <td title="{{ token.issued_at.strftime('%Y-%m-%d %H:%M:%S UTC') }}">
+                                    <span class="timestamp">{{ token.issued_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                                </td>
+                                <td title="{{ token.expires_at.strftime('%Y-%m-%d %H:%M:%S UTC') }}">
+                                    <span class="timestamp">{{ token.expires_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <svg class="empty-icon" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="m21 21-4.35-4.35"></path>
+                </svg>
+                <p>No tokens have been issued yet. Use the form above to issue your first agent token.</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
 
-            navigator.clipboard.writeText(tokenPreElement.textContent).then(function() {
-                const originalHTML = buttonElement.innerHTML;
-                buttonElement.innerHTML = `
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <polyline points="20,6 9,17 4,12"></polyline>
-                    </svg>
-                    Copied!
-                `;
-                setTimeout(function() {
-                    buttonElement.innerHTML = originalHTML;
-                }, 2000);
-            }).catch(function(err) {
-                console.error('Failed to copy token: ', err);
-                alert('Failed to copy token.');
-            });
-        }
-    </script>
+<script>
+    function copyToken(elementId, buttonElement) {
+        const tokenPreElement = document.getElementById(elementId);
+        if (!tokenPreElement) return;
+
+        navigator.clipboard.writeText(tokenPreElement.textContent).then(function() {
+            const originalHTML = buttonElement.innerHTML;
+            buttonElement.innerHTML = `
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20,6 9,17 4,12"></polyline>
+                </svg>
+                Copied!
+            `;
+            setTimeout(function() {
+                buttonElement.innerHTML = originalHTML;
+            }, 2000);
+        }).catch(function(err) {
+            console.error('Failed to copy token: ', err);
+            alert('Failed to copy token.');
+        });
+    }
+</script>
 {% endblock %}

@@ -29,7 +29,7 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     margin: 0;
     padding: 0;
     background-color: var(--color-bg-subtle);
@@ -558,6 +558,47 @@ code {
     margin-bottom: 8px;
 }
 
+/* Service Info Section improvements */
+.service-info-section {
+    margin-bottom: 24px;
+}
+
+.service-info-section h4 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    letter-spacing: 0.5px;
+}
+
+.info-grid {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+}
+
+.info-label {
+    font-weight: 500;
+    color: #555;
+    min-width: 100px;
+}
+
+.info-value {
+    background: #f5f5f5;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    font-size: 0.8rem;
+    color: #333;
+}
+
 .service-info-card {
     background-color: var(--color-bg);
 }
@@ -577,6 +618,34 @@ code {
 .info-label {
     font-weight: 500;
     color: var(--color-text-subtle);
+}
+
+.jwks-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.jwks-content {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 12px;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    margin: 12px 0;
+    overflow-x: auto;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 .jwks-link {
@@ -821,6 +890,12 @@ code {
 
 .revoke-form .text-subtle {
     margin-bottom: 24px;
+    font-size:14px;
+}
+
+.revoke-form-card .text-subtle {
+    margin-bottom: 24px;
+    font-size:14px;
 }
 
 .jti-input {
@@ -846,17 +921,14 @@ code {
     background-color: #c53030;
 }
 
-.revoked-tokens-section h3 {
-    margin-bottom: 8px;
-    font-weight: 600;
-}
+
 
 .table-container {
     margin-top: 20px;
     overflow-x: auto;
 }
 
-.revoked-tokens-table {
+.revoked-tokens-table, .tokens-table {
     width: 100%;
     border-collapse: collapse;
     background-color: var(--color-bg);
@@ -865,7 +937,7 @@ code {
     box-shadow: var(--shadow-sm);
 }
 
-.revoked-tokens-table th {
+.revoked-tokens-table th, .tokens-table th {
     background-color: var(--color-bg-subtle);
     font-weight: 600;
     font-size: 12px;
@@ -875,9 +947,11 @@ code {
     padding: 12px 16px;
 }
 
-.revoked-tokens-table td {
+.revoked-tokens-table td, .tokens-table td {
     padding: 12px 16px;
     border-bottom: 1px solid var(--color-border);
+    font-weight: 400;
+    font-size: 12px;
 }
 
 .revoked-tokens-table tr:last-child td {
@@ -1015,4 +1089,1106 @@ button.copy-btn:hover {
         margin-right: 16px;
     }
 }
+/* New styles for verify_agents_public, start_here, and agent_creator_dashboard */
 
+/* General spacing improvements */
+.verify-agents-section h3 {
+    margin: 0 0 8px 0;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.subtitle {
+    margin: 0 0 24px 0;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.4;
+}
+
+.experimental-tag {
+    font-size: 0.8rem;
+    color: #888;
+    font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .building-agents-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    
+    .btn-black {
+        align-self: stretch;
+        justify-content: center;
+    }
+    
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .sdk-option {
+        max-width: 100%;
+    }
+}
+
+.experimental-tag {
+    font-size: 0.85em;
+    color: #888;
+    font-style: italic;
+}
+
+/* Identity Card with pastel blue background */
+.identity-card {
+    background-color: #C4D7FF;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+    border: none;
+}
+
+.identity-card h4 {
+    margin: 0 0 8px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.identity-card p {
+    margin: 0 0 8px 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    color: #333;
+}
+
+.identity-card p:last-child {
+    margin-bottom: 0;
+}
+
+.read-more-link {
+    color: #1a73e8;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.read-more-link:hover {
+    text-decoration: underline;
+}
+
+/* Collapsible How It Works Card - Fixed for JavaScript Compatibility */
+.how-it-works-card {
+    background: var(--color-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border);
+    margin-left: 30px;
+    margin-bottom: 24px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+
+.how-it-works-header {
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    transition: background-color 0.2s ease;
+    min-height: 56px;
+}
+
+.how-it-works-header:hover {
+    background: var(--color-bg-subtle);
+}
+
+.how-it-works-header h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+}
+
+.collapse-icon {
+    transition: transform 0.3s ease;
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+    margin-left: 12px;
+}
+
+/* Content styling - works with JavaScript display toggle */
+.how-it-works-content {
+    padding: 20px;
+    background: var(--color-bg);
+    /* Remove any max-height or display restrictions that conflict with JS */
+}
+
+/* Steps list styling */
+.steps-list {
+    margin: 0;
+    padding-left: 20px;
+    list-style-type: decimal;
+}
+
+.steps-list li {
+    margin-bottom: 12px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--color-text);
+    padding-left: 4px;
+}
+
+.steps-list li:last-child {
+    margin-bottom: 0;
+}
+
+.steps-list strong {
+    color: var(--color-text);
+    font-weight: 600;
+}
+
+/* Code elements within steps */
+.steps-list code {
+    background-color: var(--color-bg-muted);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .how-it-works-header {
+        padding: 14px 16px;
+        min-height: 52px;
+    }
+    
+    .how-it-works-header h4 {
+        font-size: 13px;
+    }
+    
+    .how-it-works-content {
+        padding: 16px;
+    }
+    
+    .steps-list {
+        padding-left: 16px;
+    }
+    
+    .steps-list li {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+}
+/* How It Works Section Styles */
+
+.how-it-works-section {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    margin-top: 24px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.how-it-works-section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-subtle);
+    margin: 0 0 16px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.how-it-works-section p {
+    font-size: 14px;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.how-it-works-section p:last-of-type {
+    margin-bottom: 20px;
+}
+
+/* Components list styling */
+.components-list {
+    margin: 16px 0 20px 0;
+    padding-left: 20px;
+    counter-reset: component-counter;
+}
+
+.components-list li {
+    font-size: 14px;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    padding-left: 8px;
+}
+
+.components-list li:last-child {
+    margin-bottom: 0;
+}
+
+.components-list strong {
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.components-list code {
+    background-color: var(--color-bg-muted);
+    padding: 2px 6px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+}
+
+/* Read more link styling */
+.read-more {
+    color: var(--color-accent);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+    color: var(--color-accent-hover);
+}
+
+/* SDK option styling */
+.how-it-works-section .sdk-option {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 20px;
+    max-width: 400px;
+}
+
+.how-it-works-section .sdk-icon {
+    margin-right: 16px;
+    flex-shrink: 0;
+}
+
+.how-it-works-section .sdk-icon img {
+    display: block;
+    border-radius: var(--radius-sm);
+}
+
+.how-it-works-section .sdk-details {
+    flex: 1;
+}
+
+.how-it-works-section .sdk-details span {
+    font-weight: 600;
+    color: var(--color-text);
+    font-size: 16px;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.how-it-works-section .sdk-note {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .input-with-button {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .input-with-button .btn-primary {
+        margin-top: 8px;
+    }
+    
+    .revoked-tokens-section {
+        max-width: 100%;
+        margin: 0 16px;
+    }
+    
+    .how-it-works-section .sdk-option {
+        max-width: 100%;
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+    }
+    
+    .how-it-works-section .sdk-icon {
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+}
+
+.sdk-option {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 20px;
+    max-width: 400px;
+}
+
+.sdk-icon {
+    margin-right: 12px;
+    flex-shrink: 0;
+}
+
+.sdk-details span {
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.sdk-note {
+    margin: 2px 0 0 0;
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1.3;
+}
+
+.info-item {
+    margin-bottom: 0rem;
+    margin-left: 0.5rem;
+}
+
+.info-label {
+    font-weight: 600;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+/* Building AI Agents Card with purple background */
+.building-agents-card {
+    background-color: #E6E0F3;
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 24px;
+    border: none;
+}
+
+.building-agents-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.building-agents-text {
+    flex: 1;
+}
+
+.building-agents-text h4 {
+    margin: 0 0 4px 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.building-agents-text p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.4;
+}
+
+/* Black GitHub button */
+.btn-black {
+    background-color: #000;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-black:hover {
+    background-color: #1a1a1a;
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: white;
+}
+
+.btn-black:active {
+    transform: translateY(0);
+}
+
+
+.api-token-section, .sdk-section {
+    margin-bottom: 2rem;
+    padding-left:36px;
+}
+
+/* API Token Section */
+
+.api-token-section h5, .sdk-section h5 {
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.api-token-section .text-subtle {
+    font-size: 14px;
+    color: var(--color-text-subtle);
+    margin: 0 0 16px 0;
+}
+
+.sdk-section .text-subtle {
+    font-size: 14px;
+    color: var(--color-text-subtle);
+    margin: 0 0 16px 0;
+}
+
+.issued-tokens-section .text-subtle {
+    font-size: 14px;
+    color: var(--color-text-subtle);
+    margin: 0 0 16px 0;
+}
+
+/* Token Display Area */
+.token-display {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+    align-items: stretch;
+}
+
+.token-field {
+    flex: 1;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background-color: var(--color-bg-muted);
+    color: var(--color-text);
+    min-height: 40px;
+    box-sizing: border-box;
+}
+
+.token-field:focus {
+    outline: 0;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+}
+
+/* Copy token button styling */
+#copyTokenBtn {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    padding: 10px 16px;
+    border-radius: var(--radius-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+    min-height: 40px;
+    box-sizing: border-box;
+}
+
+#copyTokenBtn:hover {
+    background-color: var(--color-bg-subtle);
+    border-color: var(--color-border-strong);
+}
+
+/* Token Warning */
+.token-warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background-color: #fef2f2;
+    border: 1px solid var(--color-danger);
+    border-radius: var(--radius-sm);
+    padding: 12px;
+    margin-top: 8px;
+}
+
+.token-warning svg {
+    flex-shrink: 0;
+    color: var(--color-danger);
+    margin-top: 2px;
+}
+
+.token-warning p {
+    font-size: 12px;
+    color: var(--color-danger);
+    margin: 0;
+    line-height: 1.4;
+    font-weight: 500;
+}
+
+
+.api-reference-link {
+    color: var(--color-accent);
+    text-decoration: underline;
+    padding-top: 24px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.api-reference-link:hover {
+    text-decoration: underline;
+    color: var(--color-accent-hover);
+}
+
+/* Note Section */
+.note-section {
+    padding-left: 16px;
+    margin-top: 24px;
+    padding-top: 24px;
+    border-top: 1px solid var(--color-border);
+}
+
+.note {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-style: italic;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+.get-started-section h5 {
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.get-started-section p {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    color: #666;
+}
+
+/* Additional CSS for GET STARTED section */
+
+.get-started-section {
+    margin-bottom: 24px;
+}
+
+.get-started-section > h4 {
+    margin: 0 0 16px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    padding-left: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.get-started-content {
+    padding-left: 30px;
+}
+
+.get-started-content h5 {
+    margin: 0 0 8px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a1a1a;
+}
+
+.get-started-description {
+    margin: 0 0 16px 0;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 0.7rem;
+    margin-bottom:1rem;
+}
+
+/* SDK Option styling (moved from how-it-works) */
+.get-started-content .sdk-option {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 20px;
+    max-width: 400px;
+}
+
+.get-started-content .sdk-icon {
+    margin-right: 16px;
+    flex-shrink: 0;
+}
+
+.get-started-content .sdk-details span {
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.get-started-content .sdk-note {
+    margin: 2px 0 0 0;
+    font-size: 0.8rem;
+    color: #666;
+    line-height: 1;
+}
+
+/* Update How It Works to remove SDK-related styles since they're moved */
+.how-it-works-content .steps-list li {
+    margin-bottom: 12px; /* Reduced from 16px since no SDK card */
+}
+
+/* Ensure consistent spacing between sections */
+.get-started-section,
+.how-it-works-card,
+.service-info-section {
+    margin-bottom: 24px;
+}
+
+/* Mobile responsiveness for GET STARTED */
+@media (max-width: 768px) {
+    .get-started-content {
+        padding-left: 8px;
+    }
+    
+    .get-started-content .sdk-option {
+        max-width: 100%;
+    }
+}
+
+/* Revoked Tokens Page Specific Styles */
+
+.revoked-tokens-section {
+    max-width: 800px;
+    margin-right: auto;
+    width: 100%;
+}
+
+.section-intro {
+    margin-bottom: 24px;
+}
+
+.section-intro h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--color-text);
+}
+
+
+.revocation-checker {
+    margin-bottom: 32px;
+}
+
+.revocation-form {
+    margin-bottom: 32px;
+}
+
+/* Input with button layout */
+.input-with-button {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 8px;
+}
+
+.input-with-button input[type="text"] {
+    flex: 1;
+    margin-bottom: 0;
+}
+
+.input-with-button .btn-primary {
+    flex-shrink: 0;
+    white-space: nowrap;
+}
+
+/* Field description styling */
+.field-description {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    margin: 8px 0 0 0;
+    line-height: 1.4;
+}
+
+/* Revocation explanation section */
+.revocation-explanation {
+    border-top: 1px solid var(--color-border);
+    padding-top: 24px;
+}
+
+.revocation-explanation h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: var(--color-text);
+}
+
+.revocation-explanation p {
+    font-size: 14px;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.revocation-explanation ul {
+    font-size: 14px;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin: 0 0 20px 0;
+    padding-left: 20px;
+}
+
+.revocation-explanation li {
+    margin-bottom: 6px;
+}
+
+.revocation-explanation li:last-child {
+    margin-bottom: 0;
+}
+
+/* Note box styling */
+.note-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background-color: var(--color-bg-subtle);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-top: 20px;
+}
+
+.note-icon {
+    flex-shrink: 0;
+    color: #8B1A10;
+    margin-top: 2px;
+}
+
+.note-box p {
+    font-size: 14px;
+    color: var(--color-text);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .input-with-button {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .input-with-button .btn-primary {
+        margin-top: 8px;
+    }
+    
+    .revoked-tokens-section {
+        max-width: 100%;
+        margin: 0 16px;
+    }
+}
+
+/* Profile Page Styles */
+
+.profile-section {
+    max-width: 800px;
+    margin-right: auto;
+    width: 100%;
+}
+
+.section-intro {
+    margin-bottom: 24px;
+}
+
+.section-intro h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin: 0 0 8px 0;
+}
+
+
+/* Profile Cards */
+.profile-card,
+.api-token-info,
+.account-actions {
+    background-color: var(--color-bg);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--color-border);
+    margin-bottom: 24px;
+}
+
+.profile-card h3,
+.api-token-info h3,
+.account-actions h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 20px 0;
+}
+
+/* Profile Details */
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.profile-row {
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.profile-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.profile-label {
+    font-weight: 500;
+    color: var(--color-text-subtle);
+    min-width: 140px;
+    font-size: 14px;
+}
+
+.profile-value {
+    color: var(--color-text);
+    font-size: 14px;
+    flex: 1;
+}
+
+/* Website Link */
+.website-link {
+    color: var(--color-accent);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: color 0.15s ease;
+}
+
+.website-link:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+}
+
+.website-link svg {
+    flex-shrink: 0;
+}
+
+/* API Token Management */
+.api-token-info .text-subtle {
+    font-size: 14px;
+    color: var(--color-text-subtle);
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+}
+
+.token-management {
+    margin-bottom: 32px;
+}
+
+/* Security Tips */
+.token-security-tips {
+    border-top: 1px solid var(--color-border);
+    padding-top: 24px;
+}
+
+.token-security-tips h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-text);
+    margin: 0 0 16px 0;
+}
+
+.token-security-tips ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.token-security-tips li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    background-color: var(--color-bg-subtle);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-border);
+}
+
+.tip-icon {
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.tip-text {
+    font-size: 14px;
+    color: var(--color-text);
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Account Actions */
+.account-actions .text-subtle {
+    font-size: 14px;
+    color: var(--color-text-subtle);
+    margin: 0 0 20px 0;
+    line-height: 1.4;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+/* Button Styles - consistent with other pages */
+.btn-secondary {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.15s ease;
+    cursor: pointer;
+}
+
+.btn-secondary:hover {
+    background-color: var(--color-bg-subtle);
+    border-color: var(--color-border-strong);
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.btn-danger {
+    background-color: var(--color-danger);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.15s ease;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c53030;
+    text-decoration: none;
+    color: white;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    .profile-section {
+        margin: 0 16px;
+    }
+    
+    .profile-card,
+    .api-token-info,
+    .account-actions {
+        padding: 16px;
+    }
+    
+    .profile-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+        padding: 12px 0;
+    }
+    
+    .profile-label {
+        min-width: auto;
+        font-weight: 600;
+    }
+    
+    .profile-value {
+        padding-left: 0;
+    }
+    
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-secondary,
+    .btn-danger {
+        justify-content: center;
+    }
+}

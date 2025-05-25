@@ -1,0 +1,58 @@
+<!-- app/templates/revoked_tokens.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="revoked-tokens-section">
+    <h3>Check Token Revocation Status</h3>
+    <div class="section-intro">
+        <p class="subtitle">Verify if an agent token has been revoked.</p>
+    </div>
+
+    <div class="revocation-checker card">
+        <form method="post" class="revocation-form">
+            <div class="form-group">
+                <label for="jti">JWT ID (JTI)</label>
+                <div class="input-with-button">
+                    <input type="text" 
+                           id="jti" 
+                           name="jti" 
+                           placeholder="Enter the JTI to check"
+                           required>
+                    <button type="submit" class="btn-primary">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        Check Status
+                    </button>
+                </div>
+                <p class="field-description">
+                    The JWT ID (jti) is a unique identifier for the token you want to check.
+                    You can find this in the JWT payload of the token (requires decoding the token).
+                </p>
+            </div>
+        </form>
+
+        <div class="revocation-explanation">
+            <h3>What is token revocation?</h3>
+            <p>When a token is revoked, it is added to a blacklist and should no longer be honored by service providers, even if it hasn't expired yet. Tokens might be revoked for various reasons:</p>
+            
+            <ul>
+                <li>The user revoked access for the agent</li>
+                <li>The agent or token was compromised</li>
+                <li>The permissions granted to the agent have changed</li>
+                <li>The agent's task was completed ahead of schedule</li>
+            </ul>
+            
+            <div class="note-box">
+                <svg class="note-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
+                <p>Service providers should always check token revocation status before honoring an agent token, even if the token's signature and expiration are valid.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

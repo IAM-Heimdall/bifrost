@@ -1,0 +1,161 @@
+<!-- app/templates/verify_agents_public.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="verify-section">
+    <h3>Verify AI Agents</h3>
+    
+    <div class="verify-agents-section">
+        <p class="subtitle">Identify and Authenticate AI agents <span class="experimental-tag">[experimental version]</span></p>
+        
+        <!-- Identity Card with pastel blue background -->
+        <div class="identity-card">
+            <h4>Identity for AI Agents.</h4>
+            <p>Why should AI Agents be traceable? How can it be done?</p>
+            <p>Start using Heimdall's Agent Identity Framework to securely identify and track AI agents accessing your services.  <a href="https://blog.iamheimdall.com/2025/05/08/Business-Unlocks/" class="read-more" target="_blank" rel="noopener noreferrer">Read more</a></p>
+        </div>
+        
+        <!-- GET STARTED Section -->
+        <div class="get-started-section">
+            <h4>GET STARTED</h4>
+            <div class="get-started-content">
+                <h5><strong>Use our ready-made SDK</strong></h5>
+                <p class="get-started-description">Libraries to extract agent identifier and validate them</p>
+                <div class="sdk-option">
+                    <div class="sdk-icon">
+                        <img src="{{ url_for('static', path='/assets/python-logo.png') }}" alt="Python" width="48">
+                    </div>
+                    <div class="sdk-details">
+                        <span>Python</span>
+                        <p class="sdk-note">More coming soon.<br>Link redirects to GitHub</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Collapsible How It Works Section -->
+        <div class="how-it-works-card">
+            <div class="how-it-works-header" onclick="toggleHowItWorks()">
+                <h4>HOW IT WORKS?</h4>
+                <svg class="collapse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                </svg>
+            </div>
+            <div class="how-it-works-content" id="howItWorksContent">
+                <ol class="steps-list">
+                    <li>
+                        <strong>Receive Agent Token (ATK):</strong> AI Agents present a secure ATK when accessing your service.
+                    </li>
+                    <li>
+                        <strong>Integrate Validator:</strong> Use Heimdall libraries in your backend to extract and process the ATK.
+                    </li>
+                    <li>
+                        <strong>Automatic Verification:</strong> The SDK fetches public keys, verifies signatures, and checks revocation status.
+                    </li>
+                    <li>
+                        <strong>Act with Confidence:</strong> Get verified agent identity, permissions, and user delegation context.
+                    </li>
+                </ol>
+            </div>
+        </div>
+        
+        <!-- Collapsible Service Information Section -->
+        <div class="how-it-works-card">
+            <div class="how-it-works-header" onclick="toggleServiceInfo()">
+                <h4>SERVICE INFORMATION</h4>
+                <svg class="collapse-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                </svg>
+            </div>
+            <div class="how-it-works-content" id="serviceInfoContent">
+                <div class="info-grid">
+                    <div class="info-item">
+                        <span class="info-label">Issuer ID:</span>
+                        <code class="info-value">{{ issuer_id }}</code>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">JWKS Endpoint:</span>
+                        <code class="info-value">{{ jwks_url }}</code>
+                    </div>
+                </div>
+                
+                <div class="jwks-section">
+                    <h4>Current JWKS</h4>
+                    <pre class="jwks-content">{{ jwks_content_str }}</pre>
+                    <button id="copyJwksBtn" class="btn-secondary">Copy JWKS</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Building AI Agents Card with purple background -->
+        <div class="building-agents-card">
+            <div class="building-agents-content">
+                <div class="building-agents-text">
+                    <h4>Building AI Agents?</h4>
+                    <p>Add trust to your AI Agents!</p>
+                </div>
+                <a href="/auth/github/login" class="btn-black">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.30.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.30.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    Sign up with GitHub
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Copy JWKS functionality
+    document.getElementById('copyJwksBtn').addEventListener('click', function() {
+        const jwksContent = document.querySelector('.jwks-content').textContent;
+        navigator.clipboard.writeText(jwksContent).then(function() {
+            const button = document.getElementById('copyJwksBtn');
+            const originalText = button.textContent;
+            button.textContent = "Copied!";
+            setTimeout(function() {
+                button.textContent = originalText;
+            }, 2000);
+        }).catch(function(err) {
+            console.error('Failed to copy JWKS: ', err);
+        });
+    });
+
+    // Toggle How It Works section
+    function toggleHowItWorks() {
+        const content = document.getElementById('howItWorksContent');
+        const icon = content.parentElement.querySelector('.collapse-icon');
+        
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            content.style.display = 'none';
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    // Toggle Service Information section
+    function toggleServiceInfo() {
+        const content = document.getElementById('serviceInfoContent');
+        const icon = content.parentElement.querySelector('.collapse-icon');
+        
+        if (content.style.display === 'none' || content.style.display === '') {
+            content.style.display = 'block';
+            icon.style.transform = 'rotate(180deg)';
+        } else {
+            content.style.display = 'none';
+            icon.style.transform = 'rotate(0deg)';
+        }
+    }
+
+    // Initialize collapsed state
+    document.addEventListener('DOMContentLoaded', function() {
+        const howItWorksContent = document.getElementById('howItWorksContent');
+        const serviceInfoContent = document.getElementById('serviceInfoContent');
+        
+        howItWorksContent.style.display = 'none';
+        serviceInfoContent.style.display = 'none';
+    });
+</script>
+{% endblock %}
