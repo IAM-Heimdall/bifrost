@@ -4,14 +4,14 @@
 
 This repository contains the first version of a combined **Issuing Entity (IE)** and **Registry (REG)** service, providing a complete proof-of-concept implementation of agent identity management.
 
-## 🏛️ Architecture
+##  Architecture
 
 Bifrost implements two core AIF components in a single service:
 
 - **Issuing Entity (IE)**: Issues and signs Agent Tokens (ATKs) for AI agents
 - **Registry (REG)**: Provides public key discovery (JWKS) and manages token revocation
 
-## ✨ Key Features
+## Key Features
 
 ### Token Management
 - **EdDSA/Ed25519 Cryptography**: Modern, secure digital signatures
@@ -30,11 +30,11 @@ Bifrost implements two core AIF components in a single service:
 - **Real-time Feedback**: Detailed logging and status reporting
 
 
-## 🏗️ Current Status
+##  Current Status
 
 This is **Version 1** - an early functional proof-of-concept with the following capabilities:
 
-### ✅ Implemented
+### Implemented
 - Complete IE+REG functionality
 - Token issuance and validation
 - Web management interface
@@ -42,7 +42,7 @@ This is **Version 1** - an early functional proof-of-concept with the following 
 - JWKS endpoint
 - MongoDB integration
 
-### 🚧 Planned (Phase 2)
+### Planned (Phase 2)
 - Agent Builder registration
 - Service Provider registration
 - Enhanced authentication
