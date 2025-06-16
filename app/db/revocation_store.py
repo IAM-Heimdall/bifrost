@@ -14,6 +14,7 @@ def get_revoked_tokens_collection():
     db = get_db()
     return db[REVOKED_TOKENS_COLLECTION_NAME]
 
+
 def add_jti_to_revocation_list(
     jti: str, 
     original_exp_timestamp: Optional[int] = None,
@@ -61,7 +62,7 @@ def add_jti_to_revocation_list(
         update_token_status(jti, "revoked")
         
         if result.upserted_id or result.modified_count > 0 or result.matched_count > 0:
-            logger.info(f"🛡️ JTI '{jti}' processed for revocation list.")
+            logger.info(f"🛡️ JTI '{jti}' processed for revocation list by user {agent_builder_id}")
             return True
         else:
             logger.warning(f"🤔 JTI '{jti}' revocation processing had no effect (already exists identically?).")
@@ -138,3 +139,54 @@ def get_revoked_tokens(agent_builder_id: Optional[str] = None, limit: int = 20) 
     except Exception as e:
         logger.error(f"❌ Error retrieving revoked tokens: {e}")
         return []
+
+
+def can_user_revoke_token(user_id: str, jti: str) -> Optional[bool]:
+    """
+    Check if a user can revoke a specific token (i.e., they issued it).
+    
+    Args:
+        user_id: The ID of the user attempting to revoke the token
+        jti: The JWT ID of the token to check
+        
+    Returns:
+        True if user can revoke the token
+        False if user cannot revoke the token  
+        None if there was an error during the check
+    """
+    if not user_id or not jti:
+        logger.warning("⚠️ Missing user_id or jti in can_user_revoke_token")
+        return None
+    
+    try:
+        # Get token information from issued_tokens collection
+        token_info = get_token_by_jti(jti)
+        
+        if not token_info:
+            logger.info(f"🔍 Token with JTI '{jti}' not found in issued tokens")
+            return False
+        
+        # Check if the token was issued by this user
+        token_issuer_id = token_info.get("agent_builder_id")
+        
+        if not token_issuer_id:
+            logger.warning(f"⚠️ Token '{jti}' has no agent_builder_id recorded")
+            return False
+        
+        # Convert to string for comparison (handle ObjectId)
+        if isinstance(token_issuer_id, ObjectId):
+            token_issuer_id = str(token_issuer_id)
+        
+        user_can_revoke = str(token_issuer_id) == str(user_id)
+        
+        logger.info(f"🔍 Ownership check for JTI '{jti}': "
+                   f"Issuer={token_issuer_id}, Requester={user_id}, "
+                   f"CanRevoke={user_can_revoke}")
+        
+        return user_can_revoke
+        
+    except Exception as e:
+        logger.error(f"❌ Error checking token ownership for JTI '{jti}': {e}")
+        return None
+
+

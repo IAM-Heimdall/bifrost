@@ -31,7 +31,20 @@ class ATKIssuanceResponse(BaseModel):
     atk: str = Field(..., description="The signed Agent Token (ATK) as a JWT string.")
 
 class ATKRevocationRequest(BaseModel):
-    jti: str = Field(..., min_length=1, description="The JWT ID (jti claim) of the ATK to be revoked.")
+    jti: str = Field(..., min_length=1, max_length=100, description="The JWT ID (jti claim) of the ATK to be revoked.")
+    
+    @validator('jti')
+    def validate_jti_format(cls, v):
+        """Basic JTI format validation."""
+        if not v.strip():
+            raise ValueError('JTI cannot be empty')
+        
+        # Basic format validation - adjust regex based on your JTI format
+        import re
+        if not re.match(r'^[a-zA-Z0-9\-_]+$', v.strip()):
+            raise ValueError('JTI contains invalid characters')
+        
+        return v.strip()
 
 class RevocationStatusResponse(BaseModel):
     jti: str

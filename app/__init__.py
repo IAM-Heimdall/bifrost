@@ -43,6 +43,11 @@ def create_app() -> FastAPI:
         logger.info("💾 Attempting to initialize database connection and ensure indexes...")
         db = get_db()
         ensure_db_indexes(db)
+        
+        # ADD THIS LINE for revocation indexes:
+        from app.db.mongo_client import ensure_revocation_indexes
+        ensure_revocation_indexes(db)
+        
     except Exception as e:
         logger.critical(f"❌ CRITICAL STARTUP ERROR: Failed to connect to database or ensure indexes: {e}", exc_info=True)
         raise RuntimeError(f"Database initialization failed: {e}") from e

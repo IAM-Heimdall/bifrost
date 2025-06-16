@@ -1,12 +1,15 @@
-# app/db/mongo_client.py
 import os
+import logging
 from pymongo import MongoClient
 from pymongo.database import Database
 from pymongo.errors import ConnectionFailure
 from typing import Optional
 
+
 # Import configurations from settings.py
 from config.settings import MONGO_DATABASE_URL, MONGO_DATABASE_NAME
+
+logger = logging.getLogger(__name__)
 
 _db_client: Optional[MongoClient] = None
 _db: Optional[Database] = None
@@ -81,3 +84,24 @@ def ensure_db_indexes(db_instance: Database):
 # Example of how to call ensure_db_indexes in app startup (e.g., in app/__init__.py or run.py)
 # db = get_db()
 # ensure_db_indexes(db)
+
+def ensure_revocation_indexes(db):
+    """Ensure proper database indexes for efficient revocation queries."""
+    try:
+        from config.settings import REVOKED_TOKENS_COLLECTION_NAME, ISSUED_TOKENS_COLLECTION_NAME
+        
+        # Index for revoked tokens
+        revoked_collection = db[REVOKED_TOKENS_COLLECTION_NAME]
+        revoked_collection.create_index("jti", unique=True)
+        revoked_collection.create_index("revoked_by")
+        revoked_collection.create_index("revoked_at")
+        
+        # Index for issued tokens  
+        issued_collection = db[ISSUED_TOKENS_COLLECTION_NAME]
+        issued_collection.create_index("jti", unique=True)
+        issued_collection.create_index("agent_builder_id")
+        issued_collection.create_index("status")
+        
+        logger.info("✅ Revocation indexes ensured")
+    except Exception as e:
+        logger.error(f"❌ Error ensuring revocation indexes: {e}")

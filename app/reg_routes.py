@@ -3,7 +3,9 @@ from fastapi import APIRouter, HTTPException, Query, Body, Depends
 from typing import Dict, Any
 
 from app.core.key_manager import get_jwks
-from app.db.revocation_store import add_jti_to_revocation_list, is_jti_revoked
+from app.auth.middleware import require_api_auth  
+from app.models.user_models import User 
+from app.db.revocation_store import add_jti_to_revocation_list, is_jti_revoked, can_user_revoke_token 
 from app.models.atk_models import JWKS, ATKRevocationRequest, RevocationStatusResponse
 from app.models.common_models import MessageResponse
 from datetime import datetime, timezone # For RevocationStatusResponse default
@@ -35,45 +37,70 @@ async def get_jwks_endpoint():
         raise HTTPException(status_code=500, detail="Key material not available.")
     return JWKS(**jwks_data) # Validate against Pydantic model before returning
 
-
-# For PoC, /revoke-atk is simple. In production, it would need strong auth.
-# For example, only the user who delegated, the IE that issued, or an admin should revoke.
-# async def verify_revocation_authority(jti_to_revoke: str, current_user: User = Depends(get_current_user)):
-#     # Logic to check if current_user is authorized to revoke token with jti_to_revoke
-#     pass
-
 @router.post(
     "/reg/revoke-atk",
     response_model=MessageResponse,
     summary="Revoke an Agent Token (ATK) by its JTI",
-    description="Adds a JTI to the revocation list. For PoC, this endpoint is open. "
-                "In production, it MUST be authenticated and authorized.",
+    description="Adds a JTI to the revocation list. Requires authentication and only allows "
+                "revoking tokens issued by the authenticated user.",
     responses={
         200: {"description": "JTI successfully added to revocation list"},
         400: {"model": MessageResponse, "description": "Invalid request (e.g., missing JTI)"},
+        401: {"model": MessageResponse, "description": "Authentication required"},
+        403: {"model": MessageResponse, "description": "Not authorized to revoke this token"},
+        404: {"model": MessageResponse, "description": "Token not found or not issued by user"},
         500: {"model": MessageResponse, "description": "Internal server error"},
     }
 )
 async def revoke_atk_endpoint(
-    request_body: ATKRevocationRequest = Body(...)
-    # authorized_revoker: bool = Depends(verify_revocation_authority) # Example for future
+    request_body: ATKRevocationRequest = Body(...),
+    current_user: User = Depends(require_api_auth)  # ADD AUTHENTICATION DEPENDENCY
 ):
     """
     Revokes an ATK by adding its JTI to the blacklist.
+    Only the original issuer (Agent Builder) can revoke their tokens.
+    
     - **jti**: The JWT ID of the token to revoke.
     """
-    print(f"Received request to revoke JTI: {request_body.jti}")
-    # In a real app, you might want to get the `exp` of the token being revoked
-    # to store it alongside the jti for easier cleanup of old revoked tokens.
-    # For PoC, just storing jti is fine. `original_exp_timestamp` in `add_jti_to_revocation_list` supports this.
-    success = add_jti_to_revocation_list(jti=request_body.jti)
-    if not success:
-        print(f"❌ Failed to add JTI '{request_body.jti}' to revocation list.")
-        raise HTTPException(status_code=500, detail="Failed to add JTI to revocation list.")
+    jti = request_body.jti.strip()
+    user_id = str(current_user.id)
     
-    print(f"✅ JTI '{request_body.jti}' added to revocation list.")
-    return MessageResponse(message=f"JTI '{request_body.jti}' successfully added to revocation list.")
-
+    print(f"🔐 Revocation request for JTI: {jti} by user: {user_id}")
+    
+    # Validate that the user can revoke this token
+    can_revoke = can_user_revoke_token(user_id, jti)
+    
+    if can_revoke is None:
+        print(f"❌ Error checking revocation permissions for JTI: {jti}")
+        raise HTTPException(
+            status_code=500, 
+            detail="Error validating token ownership"
+        )
+    
+    if not can_revoke:
+        print(f"🚫 User {user_id} attempted to revoke token {jti} they don't own")
+        raise HTTPException(
+            status_code=403, 
+            detail="You can only revoke tokens that you have issued"
+        )
+    
+    # Proceed with revocation
+    success = add_jti_to_revocation_list(
+        jti=jti,
+        agent_builder_id=user_id
+    )
+    
+    if not success:
+        print(f"❌ Failed to add JTI '{jti}' to revocation list")
+        raise HTTPException(
+            status_code=500, 
+            detail="Failed to add JTI to revocation list"
+        )
+    
+    print(f"✅ JTI '{jti}' successfully revoked by user {user_id}")
+    return MessageResponse(
+        message=f"Token '{jti}' successfully revoked"
+    )
 
 @router.get(
     "/reg/revocation-status",
