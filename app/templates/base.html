@@ -90,7 +90,7 @@
                                     <rect x="14" y="14" width="7" height="7"></rect>
                                     <rect x="3" y="14" width="7" height="7"></rect>
                                 </svg>
-                                Home
+                                Get Started
                             </a>
                         </li>
                         <li>
@@ -114,22 +114,6 @@
                         </li>
                     </ul>
                 </section>
-                
-                <!-- Section: Settings -->
-                <section class="separator">
-                    <h3>SETTINGS</h3>
-                    <ul>
-                        <li>
-                            <a href="{{ url_for('profile_page') }}" class="nav-item {% if active_section == 'profile' %}active{% endif %}">
-                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="12" cy="7" r="4"></circle>
-                                </svg>
-                                Profile
-                            </a>
-                        </li>
-                    </ul>
-                </section>
                 {% else %}
                 <!-- Section: Agent Creator (Not Authenticated) -->
                 <section class="separator">
@@ -143,6 +127,67 @@
                                     <line x1="15" y1="12" x2="3" y2="12"></line>
                                 </svg>
                                 Start Here
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+                {% endif %}
+
+                <!-- Section: READ (Always Visible) -->
+                <section class="separator">
+                    <h3>READ</h3>
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('api_reference_page') }}" class="nav-item {% if active_section == 'api-reference' %}active{% endif %}">
+                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 1 2 2h12a2 2 0 0 1 2-2V8z"></path>
+                                    <polyline points="14,2 14,8 20,8"></polyline>
+                                </svg>
+                                API Reference
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('whitepaper_page') }}" class="nav-item {% if active_section == 'whitepaper' %}active{% endif %}">
+                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                </svg>
+                                White Paper
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('sdk_agent_builder_page') }}" class="nav-item {% if active_section == 'sdk-ab' %}active{% endif %}">
+                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
+                                </svg>
+                                SDK: Agent Builder
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('sdk_service_provider_page') }}" class="nav-item {% if active_section == 'sdk-sp' %}active{% endif %}">
+                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"></polygon>
+                                    <line x1="12" y1="22" x2="12" y2="15.5"></line>
+                                </svg>
+                                SDK: Service Providers
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+                <!-- Section: Settings (Authenticated Only) -->
+                {% if current_user %}
+                <section class="separator">
+                    <h3>SETTINGS</h3>
+                    <ul>
+                        <li>
+                            <a href="{{ url_for('profile_page') }}" class="nav-item {% if active_section == 'profile' %}active{% endif %}">
+                                <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="12" cy="7" r="4"></circle>
+                                </svg>
+                                Profile
                             </a>
                         </li>
                     </ul>
@@ -194,9 +239,9 @@
                 <span>IAM Heimdall</span>
             </div>
             <div class="footer-links">
-                <a href="{{ url_for('documentation_page') }}">Documentation</a>
+                <a href="{{ url_for('api_reference_page') }}">API Reference</a>
+                <a href="{{ url_for('whitepaper_page') }}">White Paper</a>
                 <a href="https://github.com/example/heimdall" target="_blank">GitHub</a>
-                <a href="mailto:support@iamheimdall.com">Support</a>
             </div>
         </div>
     </footer>

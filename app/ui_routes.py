@@ -10,6 +10,8 @@ import json
 from datetime import datetime, timezone
 import jwt # For decoding ATK to get JTI in issue_token_form_post
 
+from app.utils.docs import render_markdown_file
+
 # Core imports
 from .core.token_issuer import create_atk
 # Updated to use get_revoked_tokens for the revoke_token_form_get display
@@ -70,6 +72,12 @@ def get_base_template_context(request: Request, title: str, current_user: Option
         elif path == request.app.url_path_for("documentation_page"): active_section = "documentation"
         elif path == request.app.url_path_for("profile_page"): active_section = "profile"
         elif path == request.app.url_path_for("start_here_page"): active_section = "start-here"
+        # READ section routes - MOVED TO CORRECT LOCATION
+        elif path == request.app.url_path_for("api_reference_page"): active_section = "api-reference"
+        elif path == request.app.url_path_for("whitepaper_page"): active_section = "whitepaper"
+        elif path == request.app.url_path_for("sdk_agent_builder_page"): active_section = "sdk-ab"
+        elif path == request.app.url_path_for("sdk_service_provider_page"): active_section = "sdk-sp"
+        
     except Exception as e:
         logger.warning(f"Could not determine active section due to url_for error: {e}")
         # Fallback based on raw path
@@ -81,6 +89,11 @@ def get_base_template_context(request: Request, title: str, current_user: Option
         elif "/documentation" in path: active_section = "documentation"
         elif "/profile" in path: active_section = "profile"
         elif "/start-here" in path: active_section = "start-here"
+        # READ section fallbacks
+        elif "/api-reference" in path: active_section = "api-reference"
+        elif "/whitepaper" in path: active_section = "whitepaper"
+        elif "/sdk/agent-builder" in path: active_section = "sdk-ab"
+        elif "/sdk/service-providers" in path: active_section = "sdk-sp"
         
     return {
         "request": request, 
@@ -167,6 +180,73 @@ async def handle_revoked_tokens_check_form_post(request: Request, jti: str = For
 async def documentation_page(request: Request, current_user: Optional[User] = Depends(get_optional_current_user)):
     context = get_base_template_context(request, "Documentation", current_user)
     return templates.TemplateResponse("documentation.html", context)
+
+# --- READ Section Routes (Always Accessible) ---
+
+@router.get("/api-reference", response_class=HTMLResponse, name="api_reference_page")
+async def api_reference_page(request: Request, current_user: Optional[User] = Depends(get_optional_current_user)):
+    """Render the API Reference documentation."""
+    context = get_base_template_context(request, "API Reference", current_user)
+    
+    # Render markdown content
+    content = render_markdown_file("api-reference.md")
+    if not content:
+        content = "<p>API Reference documentation is being prepared. Please check back soon.</p>"
+    
+    context["content"] = content
+    return templates.TemplateResponse("documentation/api_reference.html", context)
+
+@router.get("/whitepaper", response_class=HTMLResponse, name="whitepaper_page")
+async def whitepaper_page(request: Request, current_user: Optional[User] = Depends(get_optional_current_user)):
+    """Render the White Paper documentation."""
+    context = get_base_template_context(request, "White Paper", current_user)
+    
+    content = render_markdown_file("whitepaper.md")
+    if not content:
+        content = "<p>White Paper is being prepared. Please check back soon.</p>"
+    
+    context["content"] = content
+    return templates.TemplateResponse("documentation/whitepaper.html", context)
+
+@router.get("/sdk/agent-builder", response_class=HTMLResponse, name="sdk_agent_builder_page")
+async def sdk_agent_builder_page(request: Request, current_user: Optional[User] = Depends(get_optional_current_user)):
+    """Render the Agent Builder SDK documentation."""
+    context = get_base_template_context(request, "SDK: Agent Builder", current_user)
+    
+    content = render_markdown_file("sdk-agent-builder.md")
+    if not content:
+        content = """
+        <p>Agent Builder SDK documentation is being prepared.</p>
+        <p>For now, you can:</p>
+        <ul>
+            <li>Use the web interface to issue and revoke tokens</li>
+            <li>Use the <a href="/ui/api-reference">API Reference</a> for direct API integration</li>
+            <li>Check back soon for the Python SDK</li>
+        </ul>
+        """
+    
+    context["content"] = content
+    return templates.TemplateResponse("documentation/sdk_agent_builder.html", context)
+
+@router.get("/sdk/service-providers", response_class=HTMLResponse, name="sdk_service_provider_page")
+async def sdk_service_provider_page(request: Request, current_user: Optional[User] = Depends(get_optional_current_user)):
+    """Render the Service Provider SDK documentation."""
+    context = get_base_template_context(request, "SDK: Service Providers", current_user)
+    
+    content = render_markdown_file("sdk-service-providers.md")
+    if not content:
+        content = """
+        <p>Service Provider SDK documentation is being prepared.</p>
+        <p>For now, you can:</p>
+        <ul>
+            <li>Check the <a href="https://github.com/IAM-Heimdall/heimdall-sp-validator-sdk-python" target="_blank">Python Validator SDK</a></li>
+            <li>Use the <a href="/.well-known/jwks.json">JWKS endpoint</a> to get public keys</li>
+            <li>Reference the <a href="/ui/api-reference">API Reference</a> for validation patterns</li>
+        </ul>
+        """
+    
+    context["content"] = content
+    return templates.TemplateResponse("documentation/sdk_service_providers.html", context)
 
 # --- Authenticated User Routes ---
 

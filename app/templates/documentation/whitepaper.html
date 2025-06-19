@@ -1,0 +1,174 @@
+<!-- app/templates/documentation/whitepaper.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="docs-container">
+    <div class="docs-content whitepaper">
+        {{ content|safe }}
+    </div>
+</div>
+{% endblock %}
+
+{% block page_scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add copy buttons to all code blocks
+    const codeBlocks = document.querySelectorAll('pre');
+    
+    codeBlocks.forEach(function(pre) {
+        // Skip if copy button already exists
+        if (pre.querySelector('.docs-copy-btn')) return;
+        
+        // Create copy button
+        const copyBtn = document.createElement('button');
+        copyBtn.className = 'docs-copy-btn';
+        copyBtn.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy</span>
+        `;
+        
+        // Make pre element relative for absolute positioning
+        pre.style.position = 'relative';
+        pre.appendChild(copyBtn);
+        
+        // Add copy functionality
+        copyBtn.addEventListener('click', function() {
+            const code = pre.querySelector('code') || pre;
+            const text = code.textContent;
+            
+            // Try modern clipboard API first
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showCopySuccess(copyBtn);
+                }).catch(function(err) {
+                    console.error('Failed to copy: ', err);
+                    fallbackCopy(text, copyBtn);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopy(text, copyBtn);
+            }
+        });
+    });
+    
+    // Add smooth scrolling for anchor links
+    const anchorLinks = document.querySelectorAll('a[href^="#"]');
+    anchorLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({ 
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+                
+                // Update URL without triggering navigation
+                if (history.pushState) {
+                    history.pushState(null, null, href);
+                }
+            }
+        });
+    });
+    
+    // Enhance accessibility for details/summary elements (whitepaper)
+    const detailsElements = document.querySelectorAll('details');
+    detailsElements.forEach(function(details) {
+        const summary = details.querySelector('summary');
+        if (summary) {
+            summary.addEventListener('click', function() {
+                // Add a small delay to ensure the open state is properly set
+                setTimeout(() => {
+                    if (details.open) {
+                        details.scrollIntoView({ 
+                            behavior: 'smooth', 
+                            block: 'nearest' 
+                        });
+                    }
+                }, 100);
+            });
+        }
+    });
+    
+    // Add language labels to code blocks with better positioning
+    const codeBlocksWithLang = document.querySelectorAll('pre code[class*="language-"]');
+    codeBlocksWithLang.forEach(function(codeBlock) {
+        const className = codeBlock.className;
+        const languageMatch = className.match(/language-(\w+)/);
+        
+        if (languageMatch && languageMatch[1]) {
+            const language = languageMatch[1];
+            const pre = codeBlock.closest('pre');
+            
+            // Skip if label already exists
+            if (pre.querySelector('.docs-code-label')) return;
+            
+            // Add language label
+            const label = document.createElement('div');
+            label.className = 'docs-code-label';
+            label.textContent = language.toUpperCase();
+            
+            pre.appendChild(label);
+            
+            // Adjust copy button position if it exists
+            const copyBtn = pre.querySelector('.docs-copy-btn');
+            if (copyBtn) {
+                // Ensure copy button doesn't overlap with language label
+                copyBtn.style.right = '0.75rem';
+                copyBtn.style.top = '0.5rem';
+            }
+        }
+    });
+});
+
+function showCopySuccess(button) {
+    button.innerHTML = `
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <span>Copied!</span>
+    `;
+    button.classList.add('copied');
+    
+    setTimeout(function() {
+        button.innerHTML = `
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span>Copy</span>
+        `;
+        button.classList.remove('copied');
+    }, 2000);
+}
+
+function fallbackCopy(text, button) {
+    // Fallback copy method for older browsers
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showCopySuccess(button);
+        }
+    } catch (err) {
+        console.error('Fallback copy failed: ', err);
+    }
+    
+    document.body.removeChild(textArea);
+}
+</script>
+{% endblock %}

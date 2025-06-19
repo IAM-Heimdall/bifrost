@@ -25,6 +25,9 @@ python-multipart>=0.0.5  # For form handling
 # Configuration
 python-dotenv>=1.0.0  # For loading .env file
 
+#Documentation
+markdown>=3.6
+
 # Optional development tools
 # pytest>=7.0.0
 # pytest-asyncio>=0.21.0

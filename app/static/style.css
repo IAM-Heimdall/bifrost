@@ -2202,3 +2202,600 @@ button.copy-btn:hover {
     box-shadow: var(--shadow-sm);
     flex-shrink: 0;
 }
+
+
+/* Documentation Container - Consistent with main app */
+.docs-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.docs-content {
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Open Sans', sans-serif !important;
+    line-height: 1.6;
+    color: var(--color-text);
+    font-size: 14px !important; /* Match app font size */
+}
+
+/* Typography - Consistent with main app */
+.docs-content h1 {
+    font-size: 1.75rem !important; /* Adjusted for 12px base */
+    font-weight: 700 !important;
+    color: var(--color-text) !important;
+    margin: 0 0 1.5rem 0 !important;
+    border-bottom: 2px solid var(--color-border) !important;
+    padding-bottom: 0.75rem !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.docs-content h2 {
+    font-size: 1.375rem !important; /* Adjusted for 12px base */
+    font-weight: 600 !important;
+    color: var(--color-text) !important;
+    margin: 2rem 0 1rem 0 !important;
+    padding: 0.5rem 0 0.25rem 0 !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.docs-content h3 {
+    font-size: 1.125rem !important; /* Adjusted for 12px base */
+    font-weight: 600 !important;
+    color: var(--color-text) !important;
+    margin: 1.5rem 0 0.75rem 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.docs-content h4 {
+    font-size: 1rem !important; /* Adjusted for 12px base */
+    font-weight: 600 !important;
+    color: var(--color-text) !important;
+    margin: 1.25rem 0 0.5rem 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.docs-content h5 {
+    font-size: 0.875rem !important; /* Adjusted for 12px base */
+    font-weight: 600 !important;
+    color: var(--color-text) !important;
+    margin: 1rem 0 0.5rem 0 !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.docs-content p {
+    margin: 1rem 0 !important;
+    font-size: 14px !important; /* Match app body text */
+    line-height: 1.6 !important;
+    color: var(--color-text) !important;
+    font-family: 'Open Sans', sans-serif !important;
+}
+
+.docs-content strong {
+    font-weight: 600 !important;
+    color: var(--color-text) !important;
+}
+
+/* Hide permalink symbols (¶) that appear after headings */
+.docs-content .toc-permalink,
+.docs-content a.toc-permalink {
+    display: none !important;
+}
+
+/* Code styling - Match app exactly */
+.docs-code-wrapper {
+    position: relative !important;
+    margin: 1.5rem 0 !important;
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--color-border) !important;
+    background: var(--color-bg) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.docs-content pre,
+.docs-content .docs-code-block {
+    background: var(--color-bg) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    padding: 1.25rem !important;
+    padding-top: 2.5rem !important; /* Extra top padding for language label */
+    overflow-x: auto !important;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important; /* Match app monospace */
+    font-size: 0.8rem !important; /* Match app code size */
+    line-height: 1.5 !important;
+    color: var(--color-text) !important;
+    margin: 1.5rem 0 !important;
+    position: relative !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.docs-content pre code,
+.docs-content .docs-code-block code {
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    font-size: inherit !important;
+    color: inherit !important;
+    border: none !important;
+    font-family: inherit !important;
+}
+
+/* Inline code - Match app styling */
+.docs-content code {
+    background: var(--color-bg-muted) !important;
+    color: var(--color-text) !important;
+    padding: 0.125rem 0.375rem !important;
+    border-radius: var(--radius-sm) !important;
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important; /* Match app monospace */
+    font-size: 0.8rem !important; /* Match app code size */
+    font-weight: 500 !important;
+    border: 1px solid var(--color-border) !important;
+}
+
+/* Copy button - Positioned to avoid overlap */
+.docs-copy-btn {
+    position: absolute !important;
+    top: 0.5rem !important;
+    right: 0.75rem !important;
+    background: var(--color-bg) !important;
+    border: 1px solid var(--color-border) !important;
+    color: var(--color-text-subtle) !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: var(--radius-sm) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.25rem !important;
+    transition: all 0.15s ease !important;
+    z-index: 10 !important;
+    font-family: 'Open Sans', sans-serif !important;
+    height: 24px !important; /* Fixed height to prevent overlap */
+}
+
+.docs-copy-btn:hover {
+    background: var(--color-bg-subtle) !important;
+    border-color: var(--color-border-strong) !important;
+    color: var(--color-text) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.docs-copy-btn.copied {
+    background: #f0f9ff !important;
+    border-color: #0369a1 !important;
+    color: #0369a1 !important;
+}
+
+.docs-copy-btn svg {
+    width: 12px !important;
+    height: 12px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Language label - Positioned to avoid overlap */
+.docs-code-label {
+    position: absolute !important;
+    top: 0.5rem !important;
+    left: 1rem !important;
+    background: var(--color-bg-muted) !important;
+    color: var(--color-text-subtle) !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 4px !important;
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    border: 1px solid var(--color-border) !important;
+    z-index: 5 !important;
+    font-family: 'Open Sans', sans-serif !important;
+    height: 24px !important; /* Match copy button height */
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Ensure copy button doesn't overlap with language label */
+.docs-content pre:has(.docs-code-label) .docs-copy-btn {
+    right: 0.75rem !important;
+}
+
+/* Lists - Match app styling */
+.docs-content ul,
+.docs-content ol {
+    margin: 1rem 0 !important;
+    padding-left: 1.5rem !important;
+    font-size: 14px !important; /* Match paragraph size */
+}
+
+.docs-content li {
+    margin: 0.5rem 0 !important;
+    padding-left: 0 !important;
+    color: var(--color-text) !important;
+    line-height: 1.6 !important;
+    font-size: 14px !important; /* Match paragraph size */
+}
+
+.docs-content ul li {
+    list-style: disc !important;
+}
+
+.docs-content ol li {
+    list-style: decimal !important;
+}
+
+/* Remove custom bullet styling */
+.docs-content li:before {
+    content: none !important;
+}
+
+/* Links - Match app accent color */
+.docs-content a {
+    color: var(--color-accent) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: color 0.15s ease !important;
+}
+
+.docs-content a:hover {
+    color: var(--color-accent-hover) !important;
+    text-decoration: underline !important;
+}
+
+/* Tables - Consistent with app tables */
+.docs-content table,
+.docs-content .docs-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 1.5rem 0 !important;
+    background: var(--color-bg) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    overflow: hidden !important;
+    box-shadow: var(--shadow-sm) !important;
+    font-size: 14px !important; /* Match app table size */
+}
+
+.docs-content th {
+    background: var(--color-bg-subtle) !important;
+    font-weight: 600 !important;
+    font-size: 12px !important; /* Slightly smaller for table headers */
+    color: var(--color-text-subtle) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 0.75rem 1rem !important;
+    border-bottom: 1px solid var(--color-border) !important;
+}
+
+.docs-content td {
+    padding: 0.75rem 1rem !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    color: var(--color-text) !important;
+    font-size: 14px !important;
+}
+
+.docs-content tr:last-child td {
+    border-bottom: none !important;
+}
+
+.docs-content tr:hover {
+    background: var(--color-bg-subtle) !important;
+}
+
+/* Images - Responsive and clean */
+.docs-content img,
+.docs-content .docs-image {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: var(--radius-md) !important;
+    border: 1px solid var(--color-border) !important;
+    box-shadow: var(--shadow-sm) !important;
+    margin: 1.5rem 0 !important;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Horizontal rules */
+.docs-content hr {
+    border: none !important;
+    height: 1px !important;
+    background: var(--color-border) !important;
+    margin: 2rem 0 !important;
+}
+
+/* Special content sections */
+.docs-content blockquote {
+    border-left: 4px solid var(--color-accent) !important;
+    background: var(--color-bg-subtle) !important;
+    padding: 1rem 1.5rem !important;
+    margin: 1.5rem 0 !important;
+    border-radius: var(--radius-sm) !important;
+    font-style: italic !important;
+    font-size: 14px !important;
+}
+
+/* Whitepaper specific: Collapsible details sections */
+.docs-content details {
+    background: var(--color-bg) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    margin: 1.5rem 0 !important;
+    overflow: hidden !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.docs-content summary {
+    background: var(--color-bg-subtle) !important;
+    padding: 1rem 1.5rem !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    font-size: 14px !important; /* Match paragraph size */
+    color: var(--color-text) !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    transition: background-color 0.15s ease !important;
+}
+
+.docs-content summary:hover {
+    background: var(--color-bg-muted) !important;
+}
+
+.docs-content details[open] summary {
+    border-bottom: 1px solid var(--color-border) !important;
+}
+
+.docs-content details > div {
+    padding: 1.5rem !important;
+}
+
+.docs-content details p,
+.docs-content details ul,
+.docs-content details li {
+    font-size: 14px !important; /* Match main content */
+    line-height: 1.6 !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .docs-container {
+        padding: 0 1rem !important;
+    }
+    
+    .docs-content {
+        font-size: 13px !important; /* Slightly smaller on mobile */
+    }
+    
+    .docs-content h1 {
+        font-size: 1.5rem !important;
+    }
+    
+    .docs-content h2 {
+        font-size: 1.25rem !important;
+    }
+    
+    .docs-content h3 {
+        font-size: 1rem !important;
+    }
+    
+    .docs-content p,
+    .docs-content li {
+        font-size: 11px !important;
+    }
+    
+    .docs-content pre,
+    .docs-content .docs-code-block {
+        padding: 1rem !important;
+        padding-top: 2.25rem !important; /* Maintain space for labels on mobile */
+        font-size: 0.75rem !important; /* Smaller code on mobile */
+    }
+    
+    .docs-copy-btn {
+        padding: 0.125rem 0.25rem !important;
+        font-size: 9px !important;
+    }
+    
+    .docs-copy-btn span {
+        display: none !important; /* Hide text on mobile */
+    }
+    
+    .docs-code-label {
+        font-size: 9px !important;
+        padding: 0.125rem 0.375rem !important;
+    }
+}
+
+/* GitHub link styling for SDK docs */
+.docs-content a[href*="github.com"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    background: #24292f !important;
+    color: white !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: var(--radius-md) !important;
+    text-decoration: none !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    margin: 0.5rem 0 !important;
+    transition: all 0.15s ease !important;
+    border: 1px solid transparent !important;
+}
+
+.docs-content a[href*="github.com"]:hover {
+    background: #1a1e23 !important;
+    color: white !important;
+    text-decoration: none !important;
+    transform: translateY(-1px) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+.docs-content a[href*="github.com"]::before {
+    content: "📖";
+    font-size: 14px;
+}
+
+/* Enhanced installation command styling */
+.docs-content pre:has(code:contains("pip install")) {
+    background: var(--color-bg) !important;
+    border: 2px solid var(--color-success) !important;
+    border-radius: var(--radius-md) !important;
+    position: relative !important;
+}
+
+.docs-content pre:has(code:contains("pip install"))::before {
+    content: "📦 Installation";
+    position: absolute;
+    top: -12px;
+    left: 1rem;
+    background: var(--color-bg);
+    padding: 0 0.5rem;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-success);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-family: 'Open Sans', sans-serif;
+}
+
+/* Configuration table enhancement */
+.docs-content table th:first-child {
+    background: var(--color-accent) !important;
+    color: white !important;
+}
+
+.docs-content table td:first-child {
+    font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace !important;
+    font-size: 11px !important;
+    background: var(--color-bg-muted) !important;
+    font-weight: 600 !important;
+}
+
+/* Success/Error indicators in code examples */
+.docs-content code:contains("✅") {
+    color: var(--color-success) !important;
+}
+
+.docs-content code:contains("❌") {
+    color: var(--color-danger) !important;
+}
+
+/* License section styling */
+.docs-content h2:contains("License") + p {
+    font-size: 11px !important;
+    color: var(--color-text-muted) !important;
+    font-style: italic !important;
+}
+
+
+/* Enhanced styling for collapsible sections in documentation */
+.docs-content details {
+    margin: 1.5rem 0 !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--radius-md) !important;
+    background: var(--color-bg) !important;
+    box-shadow: var(--shadow-sm) !important;
+    overflow: hidden !important;
+}
+
+.docs-content details summary {
+    padding: 1rem 1.5rem !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+    background: var(--color-bg-subtle) !important;
+    border-bottom: 1px solid var(--color-border) !important;
+    transition: background-color 0.2s ease !important;
+    font-size: 14px !important;
+    color: var(--color-text) !important;
+}
+
+.docs-content details summary:hover {
+    background: var(--color-bg-muted) !important;
+}
+
+.docs-content details[open] summary {
+    border-bottom: 1px solid var(--color-border) !important;
+}
+
+/* Content inside collapsible sections */
+.docs-content details > *:not(summary) {
+    padding: 1.25rem 1.25rem !important; /* Reduced top/bottom padding */
+    margin: 0 !important;
+}
+
+/* Tighter paragraph spacing within collapsible sections */
+.docs-content details p {
+    margin-bottom: 0.5rem !important; /* Reduced from 1rem */
+    line-height: 1.5 !important; /* Slightly tighter line height */
+    font-size: 14px !important;
+}
+
+.docs-content details p:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Tighter list spacing */
+.docs-content details ul {
+    margin: 0.125rem 0 0.75rem 0 !important;
+    padding-left: 1.5rem !important;
+}
+
+.docs-content details li {
+    margin-bottom: 0.5rem !important; /* Reduced from 0.8rem */
+    line-height: 1.4 !important; /* Tighter line height */
+    font-size: 14px !important;
+}
+
+.docs-content details li:last-child {
+    margin-bottom: 0 !important;
+}
+
+/* Special styling for the "Gap:" text in italics */
+.docs-content details em {
+    display: block !important;
+    margin-top: 0.25rem !important;
+    font-size: 14px !important;
+    color: var(--color-text) !important;
+}
+
+/* Smooth animation when opening */
+.docs-content details[open] summary ~ * {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Ensure proper spacing between sections */
+.docs-content details + details {
+    margin-top: 1rem !important;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .docs-content details summary {
+        padding: 0.8rem 1rem !important;
+        font-size: 13px !important;
+    }
+    
+    .docs-content details > *:not(summary) {
+        padding: 1rem !important;
+    }
+    
+    .docs-content details p {
+        margin-bottom: 0.5rem !important;
+    }
+    
+    .docs-content details li {
+        margin-bottom: 0.4rem !important;
+    }
+}
