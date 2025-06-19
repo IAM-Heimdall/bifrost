@@ -3,7 +3,7 @@
 
 ## Authentication
 
-Most endpoints require Bearer token authentication. Agent Builders can generate API tokens through the dashboard after GitHub login.
+Most endpoints require Bearer token authentication. Agent Builders can generate API tokens through the dashboard after signing up. Currently GitHub oauth is supported.
 
 ```http
 Authorization: Bearer YOUR_API_TOKEN
