@@ -22,17 +22,21 @@ Bifrost implements two core AIF components in a single service:
 ### Security & Reliability
 - **Token Revocation**: Real-time revocation status checking
 - **JWKS Endpoint**: Standard key discovery for service providers
-- **MongoDB Integration**: Persistent storage for revocation lists
+- **Database Integration**: Persistent storage for revocation lists
 
 ### User Experience
 - **Web Management UI**: Simple interface for token operations
 - **RESTful APIs**: Complete API coverage for programmatic access
 - **Real-time Feedback**: Detailed logging and status reporting
 
+### SDK and Documentation
+- **Agent Creator SDK**: Create and Revoke tokens. Helper functions to build httpx headers.
+- **Service Provider SDK**: Extract and Verify tokens. Check for revocation status.
+- **Documentation**: API Reference, Documentation for SDKs and Whitepaper.
+
 
 ## Links
 
-- **Organization**: [IAM Heimdall](https://github.com/IAM-Heimdall)
 - **Documentation**: [Documentation](https://poc.iamheimdall.com/ui/api-reference)
 - **Website**: [Website](iamheimdall.com)
 
